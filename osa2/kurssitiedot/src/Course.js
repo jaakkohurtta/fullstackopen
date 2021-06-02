@@ -12,7 +12,7 @@ const Course = ({ course }) => {
 
 const Header = ({ course }) => {
   return (
-    <h1>{course.name}</h1>
+    <h2>{course.name}</h2>
   )
 }
 
