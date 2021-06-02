@@ -35,24 +35,13 @@ const Header = ({ course }) => {
 }
 
 const Content = ({ course }) => {
-  // Newschool
   return (
     <div>
-      {course.parts.map((part, index) => (
-        <Part key={index} name={part.name} exercises={part.exercises} /> 
-      ))}
+      <Part name={course.parts[0].name} exercises={course.parts[0].exercises} />
+      <Part name={course.parts[1].name} exercises={course.parts[1].exercises} />
+      <Part name={course.parts[2].name} exercises={course.parts[2].exercises} />
     </div>
   )
-
-  /* Oldschool
-  return (
-    <div>
-      <Part part={course.parts[0].name} exercises={course.parts[0].exercises} />
-      <Part part={course.parts[1].name} exercises={course.parts[1].exercises} />
-      <Part part={course.parts[2].name} exercises={course.parts[2].exercises} />
-    </div>
-  )
-  */
 }
 
 const Part = ({ name, exercises }) => {
