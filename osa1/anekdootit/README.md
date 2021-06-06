@@ -1,2 +1,2 @@
 ### anekdootit
-osat 1.12 - 1.14
+osa 1.14

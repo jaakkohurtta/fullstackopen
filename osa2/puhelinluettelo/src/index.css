@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Elements */
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* Layout & Alignment */ 
+.container {
+  width: 80%;
+  max-width: 800px;
+  margin: 10px auto;
+}
+.row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.flex-1 {
+  flex: 1;
+  padding: 2px;
+}
+.flex-2 {
+  flex: 2;
+  padding: 2px;
+}
+.fpull-right {
+  justify-content: flex-end;
+}
+
+/* Inputs */ 
+input[type=text] {
+  font-family: inherit;
+}
+input[type=text]:focus {
+  outline: 0;
+  border-bottom: 1px solid black;
+}
+.person-form-input {
+  width: 100%;
+  padding: 5px;
+  border: 0;
+  border-bottom: 1px solid lightgray;
+}
+.filter-input {
+  width: 33%;
+  border: 0;
+  border-bottom: 1px solid lightgray;
+  padding: 5px;
+}
+
+/* Table */
+table {
+  width: 100%;
+}
+tr, td {
+  display: flex;
+}
+tr:nth-child(odd) {
+  background-color: #eee;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+button:focus {
+  outline: none;
+  transform: scale(0.98);
+  transition: all 0.1s ease-in-out;
+}
+.add-btn {
+  margin: 2px 0px;
+}
+.delete-btn {
+  background-color: white;
+  color: red;
+  border-color: lightgray;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+/* Message types */
+.msg-info {
+  font-size: 24px;
+  color: black;
+  background-color:lightgreen;
+  border: 1px solid limegreen;
+  border-radius: 5px;
+  padding: 10px;
+}
+.msg-alert {
+  font-size: 24px;
+  color: black;
+  background-color: lightpink;
+  border: 1px solid crimson;
+  border-radius: 5px;
+  padding: 10px;
+}
+/* Helpers */ 
+.mt-10 {
+  margin-top: 10px;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+.mt-5 {
+  margin-top: 5px
+}
+.mb-5 {
+  margin-bottom: 5px;
+}

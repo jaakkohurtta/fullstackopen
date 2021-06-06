@@ -1,2 +1,2 @@
 ### kurssitiedot
-osat 2.1 - 2.5
+osa 2.5

@@ -1,6 +1,10 @@
-const Person = ({ person }) => {
+const Person = ({ person, onClick }) => {
   return (
-    <div>{person.name} {person.number}</div>
+    <tr>
+      <td className="flex-2">{person.name}</td>
+      <td className="flex-1">{person.number}</td>
+      <td className="flex-2 fpull-right"><button className="delete-btn" onClick={() => onClick(person.id)}>X</button></td>
+    </tr>
   )
 }
 
