@@ -50,7 +50,6 @@ const App = () => {
 
           // logs
           displayInfoMessage(`${updatedPerson.name} number updated.`, "msg-info")
-
           console.log(`${updatedPerson.name} number updated.`)
           clearInputState()
         })
