@@ -119,10 +119,11 @@ const App = () => {
   }
 
   const getValidationErrorMsg = (err) => {
-    if(err.response.data.error.search("name") !== -1 && err.response.data.error.search("number") !== -1) {
+    if(err.response.data.error.search("name") !== -1 && err.response.data.error.search("number") !== -1 && err.response.data.error.search("unique") === -1) {
       return "Name (min. length 3) and number (min. length 8) are too short."
-    }
-    else if(err.response.data.error.search("name") !== -1) {
+    } else if(err.response.data.error.search("name") !== -1 && err.response.data.error.search("unique") !== -1) {
+      return `Name must be unique (${JSON.parse(err.response.config.data).name} already in database).`
+    } else if(err.response.data.error.search("name") !== -1) {
       return "Name is too short (min. length 3)."
     }
     else if(err.response.data.error.search("number") !== -1) {
