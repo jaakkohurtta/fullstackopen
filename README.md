@@ -9,3 +9,5 @@
     - [kurssitiedot](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa2/kurssitiedot)
     - [maidentiedot](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa2/maidentiedot)
     - [puhelinluettelo](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa2/puhelinluettelo)
+3. Osa3
+    - [MERN Fonebook](https://github.com/jaakkohurtta/mern-fonebook)
