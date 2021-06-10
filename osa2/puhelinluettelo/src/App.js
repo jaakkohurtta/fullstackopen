@@ -50,13 +50,19 @@ const App = () => {
 
           // logs
           displayInfoMessage(`${updatedPerson.name} number updated.`, "msg-info")
+
           console.log(`${updatedPerson.name} number updated.`)
           clearInputState()
         })
         .catch(err => {
-          displayInfoMessage(`No ${phonebook.find(person => person.id === id).name} found on Fonebook.`, "msg-alert")
-          setPhonebook(phonebook.filter(person => person.id !== id))
-          console.log(err)
+          if(err.response.data.type === "DATABASE_ERROR") {
+            displayInfoMessage(err.response.data.error, "msg-alert")
+            setPhonebook(phonebook.filter(person => person.id !== id))
+          } else if(err.response.data.type === "VALIDATION_ERROR") {
+            displayInfoMessage(getValidationErrorMsg(err), "msg-alert")
+          } else {
+            console.log(err.response)
+          }
         })
     } else {
       fonebookService.create(newPerson)
@@ -69,7 +75,12 @@ const App = () => {
           clearInputState()
         })
         .catch(err => {
-          console.log(err)
+          // console.log(err.response)
+          // console.log(err.response.data)
+          // console.log(err.response.data.error.search("name"))
+          // console.log(err.response.data.error.search("number"))
+
+          displayInfoMessage(getValidationErrorMsg(err), "msg-alert")
         })
     }
   }
@@ -104,6 +115,20 @@ const App = () => {
   const clearInputState = () => {
     document.getElementById("nameInputField").value = ""
     document.getElementById("numberInputField").value = ""
+    setNewName("")
+    setNewNumber("")
+  }
+
+  const getValidationErrorMsg = (err) => {
+    if(err.response.data.error.search("name") !== -1 && err.response.data.error.search("number") !== -1) {
+      return "Name (min. length 3) and number (min. length 8) are too short."
+    }
+    else if(err.response.data.error.search("name") !== -1) {
+      return "Name is too short (min. length 3)."
+    }
+    else if(err.response.data.error.search("number") !== -1) {
+      return "Number is too short (min. length 8)."
+    } 
   }
 
   const displayInfoMessage = (content, type) => {

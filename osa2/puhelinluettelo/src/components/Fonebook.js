@@ -6,7 +6,7 @@ const Fonebook = ({ phonebook, filter, onClick }) => {
       <table>
         <tbody>
           {phonebook.filter(person => person.name.toLowerCase().includes(filter.toLowerCase())).map(person => (
-            <Person key={person.name} person={person} onClick={onClick} />
+            <Person key={person.id} person={person} onClick={onClick} />
           ))}
         </tbody>
       </table>
