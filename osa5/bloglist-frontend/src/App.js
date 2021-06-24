@@ -2,24 +2,25 @@ import React, { useState, useEffect } from "react"
 import Blog from "./components/Blog"
 import NewBlogForm from "./components/NewBlogForm"
 import User from "./components/User"
+import Alert from "./components/Alerts"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 
 const App = () => {
+  const [alert, setAlert] = useState({ message: null })
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
 
-  // helpers for new blogs
+  // state handling for new blog
   const [newBlogTitle, setNewBlogTitle] = useState("")
   const [newBlogAuthor, setNewBlogAuthor] = useState("")
   const [newBlogUrl, setNewBlogUrl] = useState("")
 
   // load all blogs from db
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+    blogService.getAll().then(blogs => setBlogs(blogs)
     )  
   }, [])
 
@@ -48,14 +49,17 @@ const App = () => {
       setPassword("")
       blogService.setToken(user.token)
       window.localStorage.setItem("loggedBloglistUser", JSON.stringify(user))
+      displayAlert({ message: `${user.name} logged in.` })
     } 
     catch(error) {
       console.log("invalid login")
+      displayAlert({ message: "Invalid username or password." })
     }
   }
 
   // log out user
   const logOutHandler = () => {
+    displayAlert({ message: `${user.name} logged out.` })
     setUser(null)
     window.localStorage.clear()
   }
@@ -75,17 +79,46 @@ const App = () => {
 
     try {
       const response = await blogService.createNewBlog(newBlogObj)
-      console.log(response)
+      clearNewBlogForm()
+
+      // console.log(response)
+      displayAlert({ message: `"${response.title}" by ${response.author} added to database.`})
+
+      // get updated blog list
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
     } 
     catch (error) {
       console.log(error.message)
     }
   }
 
+  const displayAlert = (message) => {
+    setAlert(message)
+
+    setTimeout(() => {
+      setAlert({ message: null })
+    }, 3000)
+  }
+
+  const clearNewBlogForm = () => {
+    // clear html
+    document.getElementById("newBlogTitle").value = ""
+    document.getElementById("newBlogAuthor").value = ""
+    document.getElementById("newBlogUrl").value = ""
+
+    // clear state
+    setNewBlogTitle("")
+    setNewBlogAuthor("")
+    setNewBlogUrl("")
+  }
+
   if(user === null) {
     return (
       <div>
-        <h2>log in</h2>
+        <h2>Bloglist 9000</h2>
+        <Alert message={alert.message} />
+        <h3>log in</h3>
         <form onSubmit={logInHandler}>
           <div>
             <label>username: </label>
@@ -103,16 +136,17 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Bloglist 9000</h2>
+      <Alert message={alert.message} />
       <User name={user.name} logOut={logOutHandler}/>
-      <br></br>
+      <h3>post new blog</h3>
       <NewBlogForm 
         setNewBlogTitle={setNewBlogTitle}
         setNewBlogAuthor={setNewBlogAuthor}
         setNewBlogUrl={setNewBlogUrl} 
         createNewBlog={createNewBlogHandler}
         />
-      <br></br>
+      <h3>blogs</h3>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

@@ -5,15 +5,15 @@ const NewBlogForm = ({ setNewBlogTitle, setNewBlogAuthor, setNewBlogUrl, createN
     <form onSubmit={createNewBlog}>
       <div>
         <label>title</label>
-        <input type="text" onChange={(e) => setNewBlogTitle(e.target.value)} />
+        <input type="text" id="newBlogTitle" onChange={(e) => setNewBlogTitle(e.target.value)} />
       </div>
       <div>
         <label>author</label>
-        <input type="text" onChange={(e) => setNewBlogAuthor(e.target.value)} />
+        <input type="text" id="newBlogAuthor" onChange={(e) => setNewBlogAuthor(e.target.value)} />
       </div>
       <div>
         <label>url</label>
-        <input type="text" onChange={(e) => setNewBlogUrl(e.target.value)} />
+        <input type="text" id="newBlogUrl" onChange={(e) => setNewBlogUrl(e.target.value)} />
       </div>
       <button type="submit">create</button>
     </form>    
