@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Blog from "./components/Blog"
 import NewBlogForm from "./components/NewBlogForm"
+import LoginForm from "./components/LoginForm"
 import User from "./components/User"
 import Alert from "./components/Alerts"
+import Toggler from "./components/Toggler"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 
@@ -13,10 +15,7 @@ const App = () => {
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
 
-  // state handling for new blog
-  const [newBlogTitle, setNewBlogTitle] = useState("")
-  const [newBlogAuthor, setNewBlogAuthor] = useState("")
-  const [newBlogUrl, setNewBlogUrl] = useState("")
+  const newBlogFormRef = useRef()
 
   // load all blogs from db
   useEffect(() => {
@@ -65,22 +64,10 @@ const App = () => {
   }
 
   // create new blog
-  const createNewBlogHandler = async (e) => {
-    e.preventDefault()
-
-    // console.log("new blog handler submit btn")
-    // console.log(newBlogTitle, newBlogAuthor, newBlogUrl)
-
-    const newBlogObj = {
-      title: newBlogTitle,
-      author: newBlogAuthor,
-      url: newBlogUrl
-    }
-
+  const postNewBlog = async (newBlog) => {
     try {
-      const response = await blogService.createNewBlog(newBlogObj)
-      clearNewBlogForm()
-
+      newBlogFormRef.current.toggleVisibility()
+      const response = await blogService.createNewBlog(newBlog)
       // console.log(response)
       displayAlert({ message: `"${response.title}" by ${response.author} added to database.`})
 
@@ -101,55 +88,41 @@ const App = () => {
     }, 3000)
   }
 
-  const clearNewBlogForm = () => {
-    // clear html
-    document.getElementById("newBlogTitle").value = ""
-    document.getElementById("newBlogAuthor").value = ""
-    document.getElementById("newBlogUrl").value = ""
-
-    // clear state
-    setNewBlogTitle("")
-    setNewBlogAuthor("")
-    setNewBlogUrl("")
+  const loginForm = () => {
+    return (
+      <LoginForm 
+      logInHandler={logInHandler} 
+      setUsername={setUsername}
+      setPassword={setPassword}
+      />
+    )
   }
 
-  if(user === null) {
+  const newBlogForm = () => {
     return (
-      <div>
-        <h2>Bloglist 9000</h2>
-        <Alert message={alert.message} />
-        <h3>log in</h3>
-        <form onSubmit={logInHandler}>
-          <div>
-            <label>username: </label>
-            <input type="text" onChange={(e) => setUsername(e.target.value)}></input>
-          </div>
-          <div>
-            <label>password: </label>
-            <input type="password" onChange={(e) => setPassword(e.target.value)}></input>
-          </div>
-          <button type="submit">log in</button>
-        </form>
-      </div>
+      <NewBlogForm postNewBlog={postNewBlog} />
     )
   }
 
   return (
     <div>
-      <h2>Bloglist 9000</h2>
+      <h2>Bloglist</h2>
       <Alert message={alert.message} />
-      <User name={user.name} logOut={logOutHandler}/>
-      <h3>post new blog</h3>
-      <NewBlogForm 
-        setNewBlogTitle={setNewBlogTitle}
-        setNewBlogAuthor={setNewBlogAuthor}
-        setNewBlogUrl={setNewBlogUrl} 
-        createNewBlog={createNewBlogHandler}
-        />
-      <h3>blogs</h3>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      {user === null ?
+        <Toggler buttonLabel="login">
+          {loginForm()} 
+        </Toggler> :
+        <div>
+          <User name={user.name} logOut={logOutHandler}/>
+          <Toggler buttonLabel="post new blog" ref={newBlogFormRef}>
+            {newBlogForm()}
+          </Toggler>
+          <h3>blogs</h3>
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+          )}
+        </div>
+      }
     </div>
   )
 }
