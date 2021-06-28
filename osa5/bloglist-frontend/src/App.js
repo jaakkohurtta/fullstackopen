@@ -16,8 +16,11 @@ const App = () => {
 
   // load all blogs from db
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs)
-    )  
+    async function getBlogs() {
+      const blogsData = await blogService.getAll()
+      setBlogs(blogsData)
+    }
+    getBlogs()
   }, [])
 
   // load user from local storage
