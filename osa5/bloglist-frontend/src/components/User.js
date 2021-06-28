@@ -2,10 +2,10 @@ import React from "react"
 
 const User = ({ name, logOut }) => {
   return (
-    <div>
-      {name} logged in
+    <span>
+      Logged in as {name}&nbsp;
       <button onClick={logOut}>logout</button>
-    </div>
+    </span>
   )
 }
 

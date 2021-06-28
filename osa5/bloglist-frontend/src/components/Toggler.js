@@ -4,7 +4,10 @@ const Toggler = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? "none" : "" }
-  const showWhenVisible = { display: visible ? "" : "none" }
+  const showWhenVisible = { 
+    display: visible ? "" : "none",
+    width: "100%"
+  }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -17,14 +20,14 @@ const Toggler = React.forwardRef((props, ref) => {
   })
 
   return (
-    <div>
-      <div style={hideWhenVisible}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <span style={hideWhenVisible}>
         <button onClick={toggleVisibility}>{props.buttonLabel}</button>
-      </div>
-      <div style={showWhenVisible}>
+      </span>
+      <span style={showWhenVisible}>
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
-      </div>
+      </span>
     </div>
   )
 })

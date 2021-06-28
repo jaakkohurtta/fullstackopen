@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
-import Blog from "./components/Blog"
-import NewBlogForm from "./components/NewBlogForm"
-import LoginForm from "./components/LoginForm"
-import User from "./components/User"
+import Blogs from "./components/Blogs"
+import Header from "./components/Header"
 import Alert from "./components/Alerts"
-import Toggler from "./components/Toggler"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 
@@ -48,17 +45,17 @@ const App = () => {
       setPassword("")
       blogService.setToken(user.token)
       window.localStorage.setItem("loggedBloglistUser", JSON.stringify(user))
-      displayAlert({ message: `${user.name} logged in.` })
+      displayAlert({ message: `${user.name} logged in.`, type: "info" })
     } 
     catch(error) {
       console.log("invalid login")
-      displayAlert({ message: "Invalid username or password." })
+      displayAlert({ message: "Invalid username or password.", type: "alert" })
     }
   }
 
   // log out user
   const logOutHandler = () => {
-    displayAlert({ message: `${user.name} logged out.` })
+    displayAlert({ message: `${user.name} logged out.`, type: "info" })
     setUser(null)
     window.localStorage.clear()
   }
@@ -69,13 +66,30 @@ const App = () => {
       newBlogFormRef.current.toggleVisibility()
       const response = await blogService.createNewBlog(newBlog)
       // console.log(response)
-      displayAlert({ message: `"${response.title}" by ${response.author} added to database.`})
+      displayAlert({ message: `"${response.title}" by ${response.author} added to database.`, type: "info"})
 
       // get updated blog list
       const updatedBlogs = await blogService.getAll()
       setBlogs(updatedBlogs)
     } 
-    catch (error) {
+    catch(error) {
+      console.log(error.message)
+    }
+  }
+
+  const likeBlog = async (id, likedBlog) => {
+    //console.log(id, likedBlog)
+
+    try {
+      const response = await blogService.updateBlog(id, likedBlog)
+      // console.log(response)  
+      displayAlert({ message: `You liked ${response.title} by ${response.author}!`, type: "info" })
+
+      // get updated blog list
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
+    } 
+    catch(error) {
       console.log(error.message)
     }
   }
@@ -88,41 +102,28 @@ const App = () => {
     }, 3000)
   }
 
-  const loginForm = () => {
-    return (
-      <LoginForm 
-      logInHandler={logInHandler} 
-      setUsername={setUsername}
-      setPassword={setPassword}
-      />
-    )
-  }
-
-  const newBlogForm = () => {
-    return (
-      <NewBlogForm postNewBlog={postNewBlog} />
-    )
-  }
-
   return (
-    <div>
-      <h2>Bloglist</h2>
-      <Alert message={alert.message} />
-      {user === null ?
-        <Toggler buttonLabel="login">
-          {loginForm()} 
-        </Toggler> :
-        <div>
-          <User name={user.name} logOut={logOutHandler}/>
-          <Toggler buttonLabel="post new blog" ref={newBlogFormRef}>
-            {newBlogForm()}
-          </Toggler>
-          <h3>blogs</h3>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
-        </div>
-      }
+    <div className="container">
+      <Header
+        user={user}
+        logOutHandler={logOutHandler}
+        logInHandler={logInHandler}
+        setUsername={setUsername}
+        setPassword={setPassword} 
+        />
+      <Alert 
+        message={alert.message}
+        type={alert.type}
+        />
+      {user
+        ? <Blogs 
+            blogs={blogs}
+            postNewBlog={postNewBlog}
+            likeBlog={likeBlog}
+            newBlogFormRef={newBlogFormRef}
+            />
+        : <div className="info-message">Please log in to view and manage blogs</div>
+        }
     </div>
   )
 }

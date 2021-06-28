@@ -22,24 +22,32 @@ const NewBlogForm = ({ postNewBlog }) => {
   }
 
   return (
-    <div>
-      <h3>post new blog</h3>
-      <form onSubmit={createNewBlog}>
-        <div>
+    <span>
+      <h3 className="text-center">Post New Blog</h3>
+      <form id="newBlogForm" style={{display:"inline"}} onSubmit={createNewBlog}>
+        <div className="form-group">
           <label>title</label>
           <input type="text" id="newBlogTitle" onChange={(e) => setNewBlogTitle(e.target.value)} />
         </div>
-        <div>
+        <div className="form-group">
           <label>author</label>
           <input type="text" id="newBlogAuthor" onChange={(e) => setNewBlogAuthor(e.target.value)} />
         </div>
-        <div>
+        <div className="form-group">
           <label>url</label>
           <input type="text" id="newBlogUrl" onChange={(e) => setNewBlogUrl(e.target.value)} />
         </div>
-        <button type="submit">post</button>
+        <div 
+          style={{ 
+            display: "inline-block", 
+            width: "50%",
+            textAlign: "right",
+            marginTop: "5px"
+            }}>
+          <button type="submit">post</button>
+        </div>
       </form>
-    </div>    
+    </span>    
   )
 }
 
