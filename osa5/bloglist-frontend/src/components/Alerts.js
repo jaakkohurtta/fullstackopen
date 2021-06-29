@@ -1,4 +1,6 @@
 import React from "react"
+import PropTypes from "prop-types"
+
 
 const Alert = ({ message, type }) => {
   const alertStyle = {
@@ -16,6 +18,11 @@ const Alert = ({ message, type }) => {
   } else {
     return <div></div>
   }
+}
+
+Alert.propTypes = {
+  message: PropTypes.string,
+  type: PropTypes.string
 }
 
 export default Alert

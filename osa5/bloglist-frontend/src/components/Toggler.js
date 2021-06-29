@@ -1,12 +1,13 @@
 import React, { useState, useImperativeHandle } from "react"
+import PropTypes from "prop-types"
 
 const Toggler = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
 
-  const hideWhenVisible = { 
+  const hideWhenVisible = {
     display: visible ? "none" : ""
   }
-  const showWhenVisible = { 
+  const showWhenVisible = {
     display: visible ? "" : "none",
     width: "100%"
   }
@@ -49,5 +50,15 @@ const Toggler = React.forwardRef((props, ref) => {
     </div>
   )
 })
+
+Toggler.displayName = "Toggler"
+
+Toggler.propTypes ={
+  buttonLabel: PropTypes.string.isRequired,
+  buttonClasses: PropTypes.string,
+  buttonId: PropTypes.string,
+  cancelId: PropTypes.string,
+  setActiveForm: PropTypes.func
+}
 
 export default Toggler

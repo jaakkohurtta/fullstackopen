@@ -1,10 +1,12 @@
 import React, { useState } from "react"
+import PropTypes from "prop-types"
+
 
 const NewBlogForm = ({ postNewBlog }) => {
   const [newBlogTitle, setNewBlogTitle] = useState("")
   const [newBlogAuthor, setNewBlogAuthor] = useState("")
   const [newBlogUrl, setNewBlogUrl] = useState("")
-  
+
   const createNewBlog = (e) => {
     e.preventDefault()
 
@@ -24,7 +26,7 @@ const NewBlogForm = ({ postNewBlog }) => {
   return (
     <span>
       <h3 className="text-center">Post New Blog</h3>
-      <form id="newBlogForm" style={{display:"inline"}} onSubmit={createNewBlog}>
+      <form id="newBlogForm" style={{ display:"inline" }} onSubmit={createNewBlog}>
         <div className="form-group">
           <label>title</label>
           <input type="text" id="newBlogTitle" onChange={(e) => setNewBlogTitle(e.target.value)} />
@@ -37,18 +39,22 @@ const NewBlogForm = ({ postNewBlog }) => {
           <label>url</label>
           <input type="text" id="newBlogUrl" onChange={(e) => setNewBlogUrl(e.target.value)} />
         </div>
-        <div 
-          style={{ 
-            display: "inline-block", 
+        <div
+          style={{
+            display: "inline-block",
             width: "50%",
             textAlign: "right",
             marginTop: "5px"
-            }}>
+          }}>
           <button type="submit">post</button>
         </div>
       </form>
-    </span>    
+    </span>
   )
+}
+
+NewBlogForm.propTypes = {
+  postNewBlog: PropTypes.func.isRequired
 }
 
 export default NewBlogForm

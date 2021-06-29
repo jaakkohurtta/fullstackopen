@@ -13,7 +13,6 @@ const App = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
-  
   const newBlogFormRef = useRef()
   const signUpFormRef = useRef()
   const logInFormRef = useRef()
@@ -30,7 +29,6 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // Load user from local storage
 
   const logInHandler = async (e) => {
@@ -46,7 +44,7 @@ const App = () => {
       blogService.setToken(user.token)
       window.localStorage.setItem("loggedBloglistUser", JSON.stringify(user))
       displayAlert({ message: `${user.name} logged in.`, type: "info" })
-    } 
+    }
     catch(error) {
       console.log(error.message)
       displayAlert({ message: "Invalid username or password.", type: "alert" })
@@ -82,11 +80,10 @@ const App = () => {
       newBlogFormRef.current.toggleVisibility()
       const response = await blogService.createNewBlog(newBlog)
       // console.log(response)
-      displayAlert({ message: `"${response.title}" by ${response.author} added to database.`, type: "info"})
-
+      displayAlert({ message: `"${response.title}" by ${response.author} added to database.`, type: "info" })
       // get updated blog list
       getBlogs()
-    } 
+    }
     catch(error) {
       console.log(error.message)
     }
@@ -97,15 +94,15 @@ const App = () => {
 
     try {
       const response = await blogService.updateBlog(id, likedBlog)
-      // console.log(response)  
-      displayAlert({ 
-        message: `You liked ${response.title} by ${response.author}!`, 
-        type: "info" 
+      // console.log(response)
+      displayAlert({
+        message: `You liked ${response.title} by ${response.author}!`,
+        type: "info"
       })
 
       // get updated blog list
       getBlogs()
-    } 
+    }
     catch(error) {
       console.log(error.message)
     }
@@ -115,11 +112,11 @@ const App = () => {
     if(window.confirm(`Delete "${blog.title}"?`)) {
       try {
         await blogService.deleteBlog(blog.id)
-        displayAlert({ 
-          message: `"${blog.title}" deleted.`, 
-          type: "alert" 
+        displayAlert({
+          message: `"${blog.title}" deleted.`,
+          type: "alert"
         })
-  
+
         // get updated blog list
         getBlogs()
       }
@@ -128,7 +125,7 @@ const App = () => {
       }
     }
   } // Delete blog from db
-  
+
   const getBlogs = async () => {
     const allBlogs = await blogService.getBlogs()
     setBlogs(allBlogs)
@@ -147,29 +144,31 @@ const App = () => {
       <Header
         user={user}
         logOutHandler={logOutHandler}
-        />
-      <Alert 
+      />
+      <Alert
         message={alert.message}
         type={alert.type}
-        />
+      />
       {user
-        ? <Blogs 
-            blogs={blogs}
-            postNewBlog={postNewBlog}
-            likeBlog={likeBlog}
-            deleteBlog={deleteBlog}
-            newBlogFormRef={newBlogFormRef}
-            user={user}
-            />
-        : <UserControl
-            setUsername={setUsername}
-            setPassword={setPassword}
-            logInHandler={logInHandler}
-            signUpUser={signUpUser}
-            logInFormRef={logInFormRef}
-            signUpFormRef={signUpFormRef}
-            />
-        }
+        ?
+        <Blogs
+          blogs={blogs}
+          postNewBlog={postNewBlog}
+          likeBlog={likeBlog}
+          deleteBlog={deleteBlog}
+          newBlogFormRef={newBlogFormRef}
+          user={user}
+        />
+        :
+        <UserControl
+          setUsername={setUsername}
+          setPassword={setPassword}
+          logInHandler={logInHandler}
+          signUpUser={signUpUser}
+          logInFormRef={logInFormRef}
+          signUpFormRef={signUpFormRef}
+        />
+      }
     </div>
   )
 }

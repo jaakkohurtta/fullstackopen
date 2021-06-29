@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react"
 import Toggler from "./Toggler"
 import LoginForm from "./LoginForm"
 import SignUpForm from "./SignUpForm"
+import PropTypes from "prop-types"
 
-const LoginControl = ({ 
+const UserControl = ({
   setUsername,
   setPassword,
   logInHandler,
   signUpUser,
   logInFormRef,
   signUpFormRef
-  }) => {
+}) => {
 
   const [activeForm, setActiveForm] = useState(null)
 
@@ -26,34 +27,41 @@ const LoginControl = ({
   return (
     <div>
       <Toggler
-        buttonLabel="login >" 
+        buttonLabel="login >"
         buttonClasses="no-border-btn"
         buttonId="LogIn"
         cancelId="UserControl"
         setActiveForm={setActiveForm}
         ref={logInFormRef}
-        >
-        <LoginForm 
-          logInHandler={logInHandler} 
-          setUsername={setUsername} 
+      >
+        <LoginForm
+          logInHandler={logInHandler}
+          setUsername={setUsername}
           setPassword={setPassword}
-          />
+        />
       </Toggler>
-      <div style={{ height: "5px"}}></div>
+      <div style={{ height: "5px" }}></div>
       <Toggler
-        buttonLabel="sign up >" 
+        buttonLabel="sign up >"
         buttonClasses="no-border-btn"
         buttonId="SignUp"
         cancelId="UserControl"
         setActiveForm={setActiveForm}
         ref={signUpFormRef}
-        >
-        <SignUpForm 
+      >
+        <SignUpForm
           signUpUser={signUpUser}
-          />
+        />
       </Toggler>
     </div>
   )
 }
 
-export default LoginControl
+UserControl.propTypes = {
+  setUsername: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  logInHandler: PropTypes.func.isRequired,
+  signUpUser: PropTypes.func.isRequired
+}
+
+export default UserControl
