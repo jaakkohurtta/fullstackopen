@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-const Blog = ({ blog, likeBlog }) => {
+const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   // click handlers
@@ -20,10 +20,15 @@ const Blog = ({ blog, likeBlog }) => {
     likeBlog(blog.id, likedBlog)
   }
 
+  const handleDeleteButton = () => {
+    deleteBlog(blog)
+  }
+
   const showBlogDetails = { display: showDetails ? "" : "none" }
   const detailsButtonLabel = showDetails ? "close" : "details"
 
   // console.log(blog)
+  // console.log(user)
 
   return (
     <div className="blog-container">
@@ -43,10 +48,18 @@ const Blog = ({ blog, likeBlog }) => {
         <div>{blog.url}</div>
         <div>{blog.likes}</div>
         <div>{blog.userId.name}</div>
+        {/* render delete button if ids match */}
+        {user.username === blog.userId.username
+          ? <div className="blog-deletebtn-container">
+              <button  className="delete-btn" onClick={handleDeleteButton}>
+                delete blog
+              </button>
+            </div>
+          : <></>
+          }
       </div>
     </div>
   )
 }
-
 
 export default Blog

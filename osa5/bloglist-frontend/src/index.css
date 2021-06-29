@@ -24,12 +24,12 @@ header {
   border-bottom: 1px solid black;
 }
 
-header button {
+.no-border-btn {
   border: none;
   border-bottom: 1px solid black;
 }
 
-header input {
+input {
   padding: 2px;
   margin: 0 2px;
 }
@@ -62,6 +62,7 @@ main h3 {
 
 #newBlogForm input {
   width: 80%;
+  padding: 2px;
 }
 
 #newBlogForm .form-group {
@@ -73,12 +74,13 @@ main h3 {
 
 .blogs-container {
   border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 10px 0;
 }
 
 .blog-container {
   width: 100%;
-  margin-top: 2px;
-  margin-bottom: 8px;
+  padding: 6px 2px;
 }
 
 .blog-container:nth-child(odd) {
@@ -91,6 +93,12 @@ main h3 {
 .blog-container button.details-btn {
   background-color: rgba(225, 245, 255, 0.8);
 }
+.blog-container button.like-btn {
+  background-color: rgba(225, 255, 225, 0.8);
+}
+.blog-container button.delete-btn {
+  background-color: rgba(255, 225, 225, 0.8);
+}
 
 .blog-title {
   display: flex;
@@ -102,8 +110,14 @@ main h3 {
   font-style: italic;
 }
 
+.blog-deletebtn-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .info-message {
-  color: #c5c5c5;
+  color: #a5a5a5;
   margin: 10px;
   width: 100%;
   text-align: center;
@@ -120,4 +134,12 @@ main h3 {
 
 .text-center {
   text-align: center;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.w-80 {
+  width: 80%;
 }
