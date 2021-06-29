@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import Blogs from "./components/Blogs"
 import Header from "./components/Header"
 import Alert from "./components/Alerts"
-import LoginControl from "./components/LoginControl"
+import UserControl from "./components/UserControl"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import signupService from "./services/signup"
@@ -161,7 +161,7 @@ const App = () => {
             newBlogFormRef={newBlogFormRef}
             user={user}
             />
-        : <LoginControl
+        : <UserControl
             setUsername={setUsername}
             setPassword={setPassword}
             logInHandler={logInHandler}
