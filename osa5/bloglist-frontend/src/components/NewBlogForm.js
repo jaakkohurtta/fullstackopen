@@ -37,7 +37,7 @@ const NewBlogForm = ({ handleNewBlogFormSubmit }) => {
             textAlign: "right",
             marginTop: "5px"
           }}>
-          <button type="submit">post</button>
+          <button id="submitNewBlogBtn" type="submit">post</button>
         </div>
       </form>
     </span>

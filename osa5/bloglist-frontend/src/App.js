@@ -154,7 +154,7 @@ const App = () => {
 
     setTimeout(() => {
       setAlert({ message: null, type: null })
-    }, 3000)
+    }, 4000)
   } // Display alert message in UI
 
   return (

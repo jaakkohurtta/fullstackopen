@@ -22,10 +22,10 @@ const SignUpForm = ({ signUpUser }) => {
 
   return (
     <form style={{ display: "inline" }} onSubmit={signUpHandler}>
-      <input type="text" placeholder="name" onChange={(e) => setName(e.target.value)}/>
-      <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)}></input>
-      <input type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}></input>
-      <button type="submit">sign up</button>
+      <input id="signupName" type="text" placeholder="name" onChange={(e) => setName(e.target.value)}/>
+      <input id="signupUsername" type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)}></input>
+      <input id="signupPassword" type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}></input>
+      <button id="submitSignupBtn" type="submit">sign up</button>
     </form>
   )
 }

@@ -25,17 +25,15 @@ const Blogs = ({
         </Toggler>
       </div>
       <div className="blogs-container mt-5 mb-5">
-        <div>
-          {blogs.map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleBlogLikeButton={handleBlogLikeButton}
-              handleBlogDeleteButton={handleBlogDeleteButton}
-              user={user}
-            />
-          )}
-        </div>
+        {blogs.map(blog =>
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleBlogLikeButton={handleBlogLikeButton}
+            handleBlogDeleteButton={handleBlogDeleteButton}
+            user={user}
+          />
+        )}
       </div>
     </main>
   )

@@ -35,8 +35,8 @@ const Blog = ({
       <div className="blog-author">author: {blog.author}</div>
       <div style={showDetails} className="blog-details mt-5">
         <div>{blog.url}</div>
-        <div>{blog.likes}</div>
-        <div>{blog.userId.name}</div>
+        <div>likes: {blog.likes}</div>
+        <div>added by: {blog.userId.name}</div>
         {/* render delete button if usernames match */}
         {user.username === blog.userId.username
           ?
