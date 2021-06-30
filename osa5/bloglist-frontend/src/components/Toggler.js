@@ -43,7 +43,7 @@ const Toggler = React.forwardRef((props, ref) => {
       <div style={hideWhenVisible}>
         <button id={props.buttonId} className={props.buttonClasses} onClick={handleTogglerClick}>{props.buttonLabel}</button>
       </div>
-      <div style={showWhenVisible}>
+      <div id="togglerContent" style={showWhenVisible}>
         {props.children}
         <button id={props.cancelId} onClick={handleTogglerClick}>cancel</button>
       </div>

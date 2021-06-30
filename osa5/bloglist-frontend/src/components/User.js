@@ -3,9 +3,9 @@ import PropTypes from "prop-types"
 
 const User = ({ name, logOut }) => {
   return (
-    <span>
+    <span id="user">
       Logged in as {name}&nbsp;
-      <button onClick={logOut}>logout</button>
+      <button className="no-border-btn" onClick={logOut}>logout</button>
     </span>
   )
 }

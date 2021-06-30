@@ -13,6 +13,7 @@ const App = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
+
   const newBlogFormRef = useRef()
   const signUpFormRef = useRef()
   const logInFormRef = useRef()
@@ -31,6 +32,7 @@ const App = () => {
     }
   }, []) // Load user from local storage
 
+  //#region User Control
   const logInHandler = async (e) => {
     e.preventDefault()
 
@@ -74,10 +76,17 @@ const App = () => {
       })
     }
   } // Sign Up New User
+  //#endregion
 
-  const postNewBlog = async (newBlog) => {
+  //#region Blog Control
+  const handleNewBlogFormSubmit = async (e, newBlog) => {
+    e.preventDefault()
+    // console.log(newBlog)
+
     try {
+      e.target.reset()
       newBlogFormRef.current.toggleVisibility()
+
       const response = await blogService.createNewBlog(newBlog)
       // console.log(response)
       displayAlert({ message: `"${response.title}" by ${response.author} added to database.`, type: "info" })
@@ -89,11 +98,19 @@ const App = () => {
     }
   } // Create new blog
 
-  const likeBlog = async (id, likedBlog) => {
-    //console.log(id, likedBlog)
+  const handleBlogLikeButton = async (blog) => {
+    // console.log(blog)
+
+    const likedBlog = {
+      user: blog.userId.id,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+      likes: blog.likes += 1
+    }
 
     try {
-      const response = await blogService.updateBlog(id, likedBlog)
+      const response = await blogService.updateBlog(blog.id, likedBlog)
       // console.log(response)
       displayAlert({
         message: `You liked ${response.title} by ${response.author}!`,
@@ -108,7 +125,7 @@ const App = () => {
     }
   } // Update blog likes
 
-  const deleteBlog = async (blog) => {
+  const handleBlogDeleteButton = async (blog) => {
     if(window.confirm(`Delete "${blog.title}"?`)) {
       try {
         await blogService.deleteBlog(blog.id)
@@ -130,6 +147,7 @@ const App = () => {
     const allBlogs = await blogService.getBlogs()
     setBlogs(allBlogs)
   } // Helper to get all blogs from db
+  //#endregion
 
   const displayAlert = (message) => {
     setAlert(message)
@@ -153,9 +171,9 @@ const App = () => {
         ?
         <Blogs
           blogs={blogs}
-          postNewBlog={postNewBlog}
-          likeBlog={likeBlog}
-          deleteBlog={deleteBlog}
+          handleNewBlogFormSubmit={handleNewBlogFormSubmit}
+          handleBlogLikeButton={handleBlogLikeButton}
+          handleBlogDeleteButton={handleBlogDeleteButton}
           newBlogFormRef={newBlogFormRef}
           user={user}
         />
