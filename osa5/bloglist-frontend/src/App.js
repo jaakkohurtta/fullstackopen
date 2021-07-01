@@ -7,6 +7,9 @@ import blogService from "./services/blogs"
 import loginService from "./services/login"
 import signupService from "./services/signup"
 
+// eslint-disable-next-line no-undef
+const app_env = process.env.REACT_APP_ENVIRONMENT
+
 const App = () => {
   const [alert, setAlert] = useState({ message: null })
   const [blogs, setBlogs] = useState([])
@@ -22,15 +25,18 @@ const App = () => {
     getBlogs()
   }, []) // Load all blogs from db on page load
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBloglistUser")
+  // if not in production load user from local storage
+  if(app_env !== "production") {
+    useEffect(() => {
+      const loggedUserJSON = window.localStorage.getItem("loggedBloglistUser")
 
-    if(loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, []) // Load user from local storage
+      if(loggedUserJSON) {
+        const user = JSON.parse(loggedUserJSON)
+        setUser(user)
+        blogService.setToken(user.token)
+      }
+    }, []) // Load user from local storage
+  }
 
   //#region User Control
   const logInHandler = async (e) => {
@@ -44,7 +50,12 @@ const App = () => {
       setUsername("")
       setPassword("")
       blogService.setToken(user.token)
-      window.localStorage.setItem("loggedBloglistUser", JSON.stringify(user))
+
+      // If app environment !production store user to local storage
+      if(app_env !== "production") {
+        window.localStorage.setItem("loggedBloglistUser", JSON.stringify(user))
+      }
+
       displayAlert({ message: `${user.name} logged in.`, type: "info" })
     }
     catch(error) {
@@ -56,7 +67,9 @@ const App = () => {
   const logOutHandler = () => {
     displayAlert({ message: `${user.name} logged out.`, type: "info" })
     setUser(null)
-    window.localStorage.clear()
+    if(app_env !== "production") {
+      window.localStorage.clear()
+    }
   } // Log Out Handler
 
   const signUpUser = async (newUserObject) => {
