@@ -163,9 +163,9 @@ describe("Bloglist app", function() {
               console.log(blogs)
               cy.visit("http://localhost:3000/")
                 .then(() => {
-                  cy.get(".blog-container").get("div:nth-child(1)").contains("likes: 35")
-                  cy.get(".blog-container").get("div:nth-child(2)").contains("likes: 22")
-                  cy.get(".blog-container").get("div:nth-child(3)").contains("likes: 10")
+                  cy.get(".blog-container").eq(0).contains("likes: 35")
+                  cy.get(".blog-container").eq(1).contains("likes: 22")
+                  cy.get(".blog-container").eq(2).contains("likes: 10")
                 })
             })
         })
