@@ -9,7 +9,7 @@
     * [Maidentiedot](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa2/maidentiedot)
     * [Puhelinluettelo](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa2/puhelinluettelo)
 4. osa3
-    * [MERN Fonebook](https://github.com/jaakkohurtta/mern-fonebook)
+    * [Fonebook mern-stack app](https://github.com/jaakkohurtta/mern-fonebook)
 5. osa4
     * [Bloglist backend](https://github.com/jaakkohurtta/mern-bloglist)
 6. [osa5](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa5/)
