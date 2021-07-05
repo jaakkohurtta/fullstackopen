@@ -14,3 +14,5 @@
     * [Bloglist backend](https://github.com/jaakkohurtta/mern-bloglist)
 6. [osa5](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa5/)
     * [Bloglist frontend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa5/bloglist-frontend)
+7. [osa](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa6/)
+   * [Unicafe redux](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa6/unicafe-redux)
