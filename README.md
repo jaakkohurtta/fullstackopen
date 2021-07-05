@@ -16,3 +16,4 @@
     * [Bloglist frontend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa5/bloglist-frontend)
 7. [osa6](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa6/)
    * [Unicafe redux](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa6/unicafe-redux)
+   * [Anekdootit redux](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa6/anecdotes-redux)
