@@ -1,15 +1,40 @@
+let activeNotification = null
+/*
+const timeoutDebugger = () => {
+  let timeoutCounter = 0
+  let timeoutInterval = setInterval(() => {
+    timeoutCounter++
+    console.log(timeoutCounter)
+  }, 990)
+
+  setTimeout(() => {
+    clearInterval(timeoutInterval)
+  }, 5000)
+}
+*/
+
 export const setNotification = (notification, duration) => {
+  
+  if(activeNotification) {
+    clearTimeout(activeNotification)
+  }
+
+  // timeoutDebugger()
+
   return async dispatch => {
-    dispatch({
-      type: "SET_NOTIFICATION",
-      payload: notification
-    })
-    setTimeout(() => {
+    activeNotification = setTimeout(() => {
       dispatch({
         type: "REMOVE_NOTIFICATION",
         payload: null
       })
+
+      activeNotification = null
     }, duration * 1000)
+
+    dispatch({
+      type: "SET_NOTIFICATION",
+      payload: notification
+    })
   }
 }
 
