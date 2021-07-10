@@ -77,11 +77,11 @@ const CreateNew = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(e.nativeEvent.submitter.id)
+
     props.addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.props.value,
+      author: author.props.value,
+      info: info.props.value,
       votes: 0
     })
     history.push("/")
@@ -90,33 +90,28 @@ const CreateNew = (props) => {
   const handleReset = (e) => {
     e.preventDefault()
 
-    document.getElementById("inputContent").value = ""
-    content.onChange()
-
-    document.getElementById("inputAuthor").value = ""
-    author.onChange()
-
-    document.getElementById("inputInfo").value = ""
-    info.onChange()
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
     <div style={{ marginBottom: "10px" }}>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           content
-          <input id="inputContent" {...content} />
+          <input {...content.props} />
         </div>
         <div>
           author
-          <input id="inputAuthor" {...author} />
+          <input {...author.props} />
         </div>
         <div>
           url for more info
-          <input id="inputInfo" {...info} />
+          <input {...info.props} />
         </div>
-        <button type="submit">create</button>
+        <button onClick={handleSubmit}>create</button>
         <button onClick={handleReset}>reset</button>
       </form>
     </div>
