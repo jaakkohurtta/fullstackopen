@@ -1,12 +1,17 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
+import { useDispatch } from "react-redux"
+import { setAlert } from "../reducers/alertReducer"
+import signupService from "../services/signup"
 
-const SignUpForm = ({ signUpUser }) => {
+const SignUpForm = ({ setActiveForm }) => {
+  const dispatch = useDispatch()
+
   const [name, setName] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const signUpHandler = (e) => {
+  const signUpHandler = async (e) => {
     e.preventDefault()
 
     const newUserObj = {
@@ -15,7 +20,23 @@ const SignUpForm = ({ signUpUser }) => {
       password
     }
 
-    signUpUser(newUserObj)
+    try {
+      const response = await signupService.newUser(newUserObj)
+      dispatch(setAlert({
+        message: `${response.username} signed up succesfully.`,
+        type: "info",
+        duration: 4
+      }))
+      setActiveForm(null)
+    }
+    catch(error) {
+      console.log(error.message)
+      dispatch(setAlert({
+        message: "Sign up failed!",
+        type: "alert",
+        duration: 4
+      }))
+    }
 
     e.target.reset()
   }
@@ -31,7 +52,7 @@ const SignUpForm = ({ signUpUser }) => {
 }
 
 SignUpForm.propTypes = {
-  signUpUser: PropTypes.func.isRequired
+  setActiveForm: PropTypes.func.isRequired
 }
 
 export default SignUpForm

@@ -35,13 +35,17 @@ const useCountry = (name) => {
           found: false
         })
       })
-    }
+     }
+     else {
+       setCountry(null)
+     }
   }, [name])
 
   return country
 }
 
 const Country = ({ country }) => {
+  // console.log(country)
   if (!country) {
     return null
   }

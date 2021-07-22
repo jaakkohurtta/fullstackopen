@@ -1,10 +1,30 @@
 import React, { useState } from "react"
-import PropTypes from "prop-types"
+import { useDispatch } from "react-redux"
 
-const NewBlogForm = ({ handleNewBlogFormSubmit }) => {
+import { setAlert } from "../reducers/alertReducer"
+import { createNewBlog } from "../reducers/blogsReducer"
+
+const NewBlogForm = ({ togglerRef }) => {
+  const dispatch = useDispatch()
+
   const [newBlogTitle, setNewBlogTitle] = useState("")
   const [newBlogAuthor, setNewBlogAuthor] = useState("")
   const [newBlogUrl, setNewBlogUrl] = useState("")
+
+  const handleNewBlogFormSubmit = async (e, newBlog) => {
+    // console.log(newBlog)
+
+    e.preventDefault()
+    e.target.reset()
+    togglerRef.current.toggleVisibility()
+
+    dispatch(createNewBlog(newBlog))
+    dispatch(setAlert({
+      message: `"${newBlog.title}" by ${newBlog.author} added to database.`,
+      type: "info",
+      duration: 4
+    }))
+  } // Create new blog
 
   return (
     <span>
@@ -42,10 +62,6 @@ const NewBlogForm = ({ handleNewBlogFormSubmit }) => {
       </form>
     </span>
   )
-}
-
-NewBlogForm.propTypes = {
-  handleNewBlogFormSubmit: PropTypes.func.isRequired
 }
 
 export default NewBlogForm

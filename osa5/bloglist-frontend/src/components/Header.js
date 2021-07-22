@@ -1,22 +1,19 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import User from "./User"
-import PropTypes from "prop-types"
 
-const Header = ({ user, logOutHandler }) => {
+const Header = () => {
+  const user = useSelector(state => state.user)
+
   return (
     <header>
       <span className="header-title">Bloglist</span>
       {user
-        ? <User name={user.name} logOut={logOutHandler} />
+        ? <User user={user} />
         : <></>
       }
     </header>
   )
-}
-
-Header.propTypes = {
-  user: PropTypes.object,
-  logOutHandler: PropTypes.func.isRequired
 }
 
 export default Header

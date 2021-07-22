@@ -1,8 +1,10 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { useSelector } from "react-redux"
 
+const Alert = () => {
+  const { message, type } = useSelector(state => state.alert)
 
-const Alert = ({ message, type }) => {
   const alertStyle = {
     display: "flex",
     justifyContent: "center",
