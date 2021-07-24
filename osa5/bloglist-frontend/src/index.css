@@ -24,6 +24,13 @@ header {
   border-bottom: 1px solid black;
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 20px;
+}
+
 .no-border-btn {
   border: none;
   border-bottom: 1px solid black;
@@ -130,6 +137,9 @@ main h3 {
 }
 .mb-5 {
   margin-bottom: 5px;
+}
+.mr-5 {
+  margin-right: 5px;
 }
 
 .text-center {

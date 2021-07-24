@@ -1,13 +1,34 @@
 import React, { useState, useEffect, useRef } from "react"
+import { useDispatch } from "react-redux"
+
+import blogService from "../services/blogs"
+import { setUser } from "../reducers/userReducer"
+
 import Toggler from "./Toggler"
 import LoginForm from "./LoginForm"
 import SignUpForm from "./SignUpForm"
 
+// eslint-disable-next-line no-undef
+const app_env = process.env.REACT_APP_ENVIRONMENT
+
 const UserControl = () => {
+  const dispatch = useDispatch()
 
   const [activeForm, setActiveForm] = useState(null)
   const signUpFormRef = useRef()
   const logInFormRef = useRef()
+
+  if(app_env === "development") {
+    useEffect(() => {
+      const loggedUserJSON = window.localStorage.getItem("loggedBloglistUser")
+
+      if(loggedUserJSON) {
+        const user = JSON.parse(loggedUserJSON)
+        dispatch(setUser(user))
+        blogService.setToken(user.token)
+      }
+    }, []) // if in dev environment load user from local storage
+  }
 
   useEffect(() => {
     if(activeForm === "LogIn") {

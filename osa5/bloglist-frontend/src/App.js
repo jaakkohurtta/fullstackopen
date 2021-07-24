@@ -1,46 +1,47 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import {
+  BrowserRouter as Router, Switch, Route, Redirect
+} from "react-router-dom"
 
-import { setUser } from "./reducers/userReducer"
 import { getBlogs } from "./reducers/blogsReducer"
 
 import Blogs from "./components/Blogs"
 import Header from "./components/Header"
 import Alert from "./components/Alerts"
 import UserControl from "./components/UserControl"
-import blogService from "./services/blogs"
-
-// eslint-disable-next-line no-undef
-const app_env = process.env.REACT_APP_ENVIRONMENT
+import Users from "./components/Users"
+import User from "./components/User"
 
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
+  const users = useSelector(state => state.users)
 
   useEffect(() => {
     dispatch(getBlogs())
   }, []) // Load all blogs from db on page load
 
-  if(app_env === "development") {
-    useEffect(() => {
-      const loggedUserJSON = window.localStorage.getItem("loggedBloglistUser")
-
-      if(loggedUserJSON) {
-        const user = JSON.parse(loggedUserJSON)
-        dispatch(setUser(user))
-        blogService.setToken(user.token)
-      }
-    }, []) // if in dev environment load user from local storage
-  }
-
   return (
     <div className="container">
-      <Header />
-      <Alert />
-      {user
-        ? <Blogs />
-        : <UserControl />
-      }
+      <Router>
+        <Header />
+        <Alert />
+        <Switch>
+          <Route path="/users/:id">
+            {user ? <User users={users} /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/users">
+            {user ? <Users /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/">
+            {user
+              ? <Blogs />
+              : <UserControl />
+            }
+          </Route>
+        </Switch>
+      </Router>
     </div>
   )
 }

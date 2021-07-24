@@ -1,6 +1,6 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import User from "./User"
+import Navbar from "./Navbar"
 
 const Header = () => {
   const user = useSelector(state => state.user)
@@ -9,8 +9,8 @@ const Header = () => {
     <header>
       <span className="header-title">Bloglist</span>
       {user
-        ? <User user={user} />
-        : <></>
+        ? <Navbar user={user} />
+        : <div />
       }
     </header>
   )

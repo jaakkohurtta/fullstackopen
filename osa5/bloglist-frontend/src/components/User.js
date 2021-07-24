@@ -1,39 +1,28 @@
 import React from "react"
-import { useDispatch } from "react-redux"
 import PropTypes from "prop-types"
+import { useParams } from "react-router-dom"
 
-import { setUser } from "../reducers/userReducer"
-import { setAlert } from "../reducers/alertReducer"
+const User = ({ users }) => {
+  const id = useParams().id
+  const user = users.find(user => user.id === id)
 
-// eslint-disable-next-line no-undef
-const app_env = process.env.REACT_APP_ENVIRONMENT
-
-const User = ({ user }) => {
-  const dispatch = useDispatch()
-
-  const logOutHandler = () => {
-    dispatch(setAlert({
-      message: `${user.name} logged out.`,
-      type: "info",
-      duration: 4
-    }))
-    dispatch(setUser(null))
-
-    if(app_env !== "production") {
-      window.localStorage.clear()
-    }
-  } // Log Out Handler
+  if(!user) {
+    return null
+  }
 
   return (
-    <span id="user">
-      Logged in as {user.name}&nbsp;
-      <button className="no-border-btn" onClick={logOutHandler}>logout</button>
-    </span>
+    <div>
+      <h2>{user.name}</h2>
+      {user.blogsAdded.length !== 0 ? <h3>blogs added</h3> : ""}
+      {user.blogsAdded.map(blog =>
+        <div key={blog.id}>{blog.title}</div>
+      )}
+    </div>
   )
 }
 
 User.propTypes = {
-  user: PropTypes.object.isRequired,
+  users: PropTypes.array.isRequired
 }
 
 export default User

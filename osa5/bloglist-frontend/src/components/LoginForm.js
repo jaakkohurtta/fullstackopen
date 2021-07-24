@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 
 import { setUser } from "../reducers/userReducer"
+import { getUsers } from "../reducers/usersReducer"
 import { setAlert } from "../reducers/alertReducer"
 import loginService from "../services/login"
 import blogService from "../services/blogs"
@@ -22,6 +23,7 @@ const LoginForm = () => {
     try {
       const user = await loginService.logIn({ username, password })
       dispatch(setUser(user))
+      dispatch(getUsers())
       blogService.setToken(user.token)
 
       // If app environment !production store user to local storage
