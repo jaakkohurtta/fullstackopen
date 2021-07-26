@@ -1,9 +1,10 @@
 import React from "react"
-import PropTypes from "prop-types"
+import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 
-const User = ({ users }) => {
+const User = () => {
   const id = useParams().id
+  const users = useSelector(state => state.users)
   const user = users.find(user => user.id === id)
 
   if(!user) {
@@ -19,10 +20,6 @@ const User = ({ users }) => {
       )}
     </div>
   )
-}
-
-User.propTypes = {
-  users: PropTypes.array.isRequired
 }
 
 export default User

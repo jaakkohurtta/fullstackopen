@@ -1,12 +1,11 @@
 import React, { useRef } from "react"
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 import NewBlogForm from "./NewBlogForm"
-import Blog from "./Blog"
 import Toggler from "./Toggler"
 
 const Blogs = () => {
   const blogs = useSelector(state => state.blogs)
-  const user = useSelector(state => state.user)
 
   const newBlogFormRef = useRef()
 
@@ -24,11 +23,9 @@ const Blogs = () => {
       </div>
       <div className="blogs-container mt-5 mb-5">
         {blogs.map(blog =>
-          <Blog
-            key={blog.id}
-            blog={blog}
-            user={user}
-          />
+          <div className="blog-container" key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}><span className="blog-title">{blog.title}</span></Link>
+          </div>
         )}
       </div>
     </main>

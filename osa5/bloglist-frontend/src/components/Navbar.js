@@ -28,7 +28,7 @@ const Navbar = ({ user }) => {
   return (
     <nav>
       <span>
-        <Link className="mr-5" to="/">home</Link>
+        <Link className="mr-5" to="/">blogs</Link>
         <Link className="mr-5" to="/users">users</Link>
       </span>
       <span>

@@ -1,24 +1,20 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
-import PropTypes from "prop-types"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
 
 import { setAlert } from "../reducers/alertReducer"
-import { likeBlog, deleteBlog } from "../reducers/blogsReducer"
+import { likeBlog, deleteBlog, commentBlog } from "../reducers/blogsReducer"
 
-const Blog = ({
-  blog,
-  user
-}) => {
+const Blog = () => {
   const dispatch = useDispatch()
 
-  const [showBlogDetails, setShowBlogDetails] = useState(false)
+  const id = useParams().id
+  const blogs = useSelector(state => state.blogs)
+  const blog = blogs.find(blog => blog.id === id)
 
-  const handleDetailsButtonClick = () => {
-    setShowBlogDetails(!showBlogDetails)
-  }
+  const user = useSelector(state => state.user)
 
-  const showDetails = { display: showBlogDetails ? "" : "none" }
-  const detailsButtonLabel = showBlogDetails ? "close" : "details"
+  const [comment, setComment] = useState("")
 
   // Click handlers
   const handleBlogLikeButton = (blog) => {
@@ -51,43 +47,50 @@ const Blog = ({
     }
   } // Delete blog from db
 
+  const handleCommentSubmit = (e) => {
+    e.preventDefault()
+
+    dispatch(commentBlog(blog.id, { content: comment }))
+    setComment("")
+
+    e.target.reset()
+  }
+
   return (
-    <div className="blog-container">
-      <div className="blog-title">
-        <span>{blog.title}</span>
-        <span>
-          <button className="details-btn" onClick={handleDetailsButtonClick}>
-            {detailsButtonLabel}
-          </button>
-          <button className="like-btn" onClick={() => handleBlogLikeButton(blog)}>
-            like
-          </button>
-        </span>
-      </div>
-      <div className="blog-author">author: {blog.author}</div>
-      <div style={showDetails} className="blog-details mt-5">
-        <div>{blog.url}</div>
-        <div>likes: {blog.likes}</div>
-        <div>added by: {blog.userId.name}</div>
-        {/* render delete button if usernames match */}
-        {user.username === blog.userId.username
-          ?
-          <div className="blog-deletebtn-container">
-            <button  className="delete-btn" onClick={() => handleBlogDeleteButton(blog)}>
-              delete blog
+    <div>
+      <div className="blog-container">
+        <div className="blog-title">
+          <span>{blog.title}</span>
+          <span>
+            <button className="like-btn" onClick={() => handleBlogLikeButton(blog)}>
+              like
             </button>
-          </div>
-          :
-          <></>
-        }
+            {user.username === blog.userId.username
+              ?
+              <button  className="delete-btn" onClick={() => handleBlogDeleteButton(blog)}>
+                delete blog
+              </button>
+              :
+              <></>
+            }
+          </span>
+        </div>
+        <div className="blog-author">author: {blog.author}</div>
+        <div className="blog-details mt-5">
+          <div>{blog.url}</div>
+          <div>likes: {blog.likes}</div>
+          <div>added by: {blog.userId.name}</div>
+        </div>
       </div>
+      <hr className="mt-5 mb-5" />
+      <h4>Comments</h4>
+      {blog.comments.map(comment => <div key={comment.id}>{comment.content}</div>)}
+      <form onSubmit={handleCommentSubmit}>
+        <input type="text" onChange={(e) => setComment(e.target.value)} />
+        <button type="submit">submit comment</button>
+      </form>
     </div>
   )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
 }
 
 export default Blog

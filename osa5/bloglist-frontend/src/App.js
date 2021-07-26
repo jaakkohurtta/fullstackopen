@@ -7,6 +7,7 @@ import {
 import { getBlogs } from "./reducers/blogsReducer"
 
 import Blogs from "./components/Blogs"
+import Blog from "./components/Blog"
 import Header from "./components/Header"
 import Alert from "./components/Alerts"
 import UserControl from "./components/UserControl"
@@ -16,7 +17,6 @@ import User from "./components/User"
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-  const users = useSelector(state => state.users)
 
   useEffect(() => {
     dispatch(getBlogs())
@@ -29,10 +29,13 @@ const App = () => {
         <Alert />
         <Switch>
           <Route path="/users/:id">
-            {user ? <User users={users} /> : <Redirect to="/" />}
+            {user ? <User /> : <Redirect to="/" />}
           </Route>
           <Route path="/users">
             {user ? <Users /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/blogs/:id">
+            {user ? <Blog /> : <Redirect to="/" />}
           </Route>
           <Route path="/">
             {user
