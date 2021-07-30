@@ -1,8 +1,16 @@
 import React, { useRef } from "react"
 import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import NewBlogForm from "./NewBlogForm"
+
 import Toggler from "./Toggler"
+import NewBlogForm from "./NewBlogForm"
+
+import {
+  StyledLink,
+  Main,
+  ContentHeader,
+  ContentRow,
+  Highlight
+} from "../theme/styledComponents"
 
 const Blogs = () => {
   const blogs = useSelector(state => state.blogs)
@@ -10,8 +18,8 @@ const Blogs = () => {
   const newBlogFormRef = useRef()
 
   return (
-    <main>
-      <div style={{ display: "flex", justifyContent: "center" }} className="mt-5 mb-5">
+    <Main>
+      <ContentHeader>
         <Toggler
           buttonLabel="Post New Blog"
           buttonClasses=""
@@ -20,15 +28,14 @@ const Blogs = () => {
         >
           <NewBlogForm togglerRef={newBlogFormRef}/>
         </Toggler>
-      </div>
-      <div className="blogs-container mt-5 mb-5">
-        {blogs.map(blog =>
-          <div className="blog-container" key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}><span className="blog-title">{blog.title}</span></Link>
-          </div>
-        )}
-      </div>
-    </main>
+      </ContentHeader>
+      <ContentRow flex><Highlight>blogs</Highlight></ContentRow>
+      {blogs.map(blog =>
+        <ContentRow margin key={blog.id}>
+          <StyledLink to={`/blogs/${blog.id}`}>{blog.title}</StyledLink>
+        </ContentRow>
+      )}
+    </Main>
   )
 }
 

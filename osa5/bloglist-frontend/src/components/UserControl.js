@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
 
-import blogService from "../services/blogs"
 import { setUser } from "../reducers/userReducer"
-
+import blogService from "../services/blogs"
 import Toggler from "./Toggler"
 import LoginForm from "./LoginForm"
 import SignUpForm from "./SignUpForm"
+
+import { Main } from "../theme/styledComponents"
 
 // eslint-disable-next-line no-undef
 const app_env = process.env.REACT_APP_ENVIRONMENT
@@ -44,7 +45,7 @@ const UserControl = () => {
   }, [activeForm, signUpFormRef, logInFormRef])
 
   return (
-    <div>
+    <Main>
       <Toggler
         buttonLabel="login >"
         buttonClasses="no-border-btn"
@@ -66,7 +67,7 @@ const UserControl = () => {
       >
         <SignUpForm setActiveForm={setActiveForm} />
       </Toggler>
-    </div>
+    </Main>
   )
 }
 

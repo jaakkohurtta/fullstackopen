@@ -1,13 +1,26 @@
 import React from "react"
 import { useDispatch } from "react-redux"
-import { Link } from "react-router-dom"
 import PropTypes from "prop-types"
 
 import { setUser } from "../reducers/userReducer"
 import { setAlert } from "../reducers/alertReducer"
 
+import styled from "styled-components"
+import { Button, StyledLink } from "../theme/styledComponents"
+
 // eslint-disable-next-line no-undef
 const app_env = process.env.REACT_APP_ENVIRONMENT
+
+const Nav = styled.nav`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 0;
+  }
+`
 
 const Navbar = ({ user }) => {
   const dispatch = useDispatch()
@@ -26,16 +39,11 @@ const Navbar = ({ user }) => {
   } // Log Out Handler
 
   return (
-    <nav>
-      <span>
-        <Link className="mr-5" to="/">blogs</Link>
-        <Link className="mr-5" to="/users">users</Link>
-      </span>
-      <span>
-        Logged in as {user.name}&nbsp;
-        <button className="no-border-btn" onClick={logOutHandler}>logout</button>
-      </span>
-    </nav>
+    <Nav>
+      <StyledLink navlink="true" to="/">blogs</StyledLink>
+      <StyledLink navlink="true" to="/users">users</StyledLink>
+      <Button white onClick={logOutHandler}>log out</Button>
+    </Nav>
   )
 }
 

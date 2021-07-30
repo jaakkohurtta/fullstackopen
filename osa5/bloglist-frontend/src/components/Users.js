@@ -1,22 +1,29 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+
+import {
+  Main,
+  ContentHeader,
+  ContentRow,
+  StyledLink,
+  Highlight
+} from "../theme/styledComponents"
 
 const Users = () => {
   const users = useSelector(state => state.users)
 
   return (
-    <div>
-      <h2>Users</h2>
+    <Main>
+      <ContentHeader>Users</ContentHeader>
       {users.map((user, index) =>
-        <div key={user.username}>
+        <ContentRow margin key={user.username}>
           <span style={{ display: "inline-block", width: "200px" }}>
-            <Link to={`/users/${user.id}`}>{user.name}</Link>
+            <StyledLink to={`/users/${user.id}`}>{user.name}</StyledLink>
           </span>
-          <span>{user.blogsAdded.length}{index === 0 ? " blogs added" : ""}</span>
-        </div>
+          <span><Highlight>{user.blogsAdded.length}</Highlight>{index === 0 ? " blogs added" : ""}</span>
+        </ContentRow>
       )}
-    </div>
+    </Main>
   )
 }
 

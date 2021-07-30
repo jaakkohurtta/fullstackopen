@@ -1,6 +1,8 @@
 import React, { useState, useImperativeHandle } from "react"
 import PropTypes from "prop-types"
 
+import { Button } from "../theme/styledComponents"
+
 const Toggler = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
 
@@ -41,11 +43,11 @@ const Toggler = React.forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button id={props.buttonId} className={props.buttonClasses} onClick={handleTogglerClick}>{props.buttonLabel}</button>
+        <Button id={props.buttonId} className={props.buttonClasses} onClick={handleTogglerClick}>{props.buttonLabel}</Button>
       </div>
       <div id="togglerContent" style={showWhenVisible}>
         {props.children}
-        <button id={props.cancelId} onClick={handleTogglerClick}>cancel</button>
+        <Button id={props.cancelId} onClick={handleTogglerClick}>cancel</Button>
       </div>
     </div>
   )

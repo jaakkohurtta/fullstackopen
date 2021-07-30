@@ -1,8 +1,11 @@
 import React, { useState } from "react"
-import PropTypes from "prop-types"
 import { useDispatch } from "react-redux"
+import PropTypes from "prop-types"
+
 import { setAlert } from "../reducers/alertReducer"
 import signupService from "../services/signup"
+
+import { Button, Input, Form, InputGroup } from "../theme/styledComponents"
 
 const SignUpForm = ({ setActiveForm }) => {
   const dispatch = useDispatch()
@@ -42,12 +45,30 @@ const SignUpForm = ({ setActiveForm }) => {
   }
 
   return (
-    <form style={{ display: "inline" }} onSubmit={signUpHandler}>
-      <input id="signupName" type="text" placeholder="name" onChange={(e) => setName(e.target.value)}/>
-      <input id="signupUsername" type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)}></input>
-      <input id="signupPassword" type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}></input>
-      <button id="submitSignupBtn" type="submit">sign up</button>
-    </form>
+    <Form inline onSubmit={signUpHandler}>
+      <InputGroup inline>
+        <Input
+          type="text"
+          placeholder="name"
+          onChange={(e) => setName(e.target.value)}
+        />
+      </InputGroup>
+      <InputGroup inline>
+        <Input
+          type="text"
+          placeholder="username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </InputGroup>
+      <InputGroup inline>
+        <Input
+          type="password"
+          placeholder="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </InputGroup>
+      <Button id="submitSignupBtn" type="submit">sign up</Button>
+    </Form>
   )
 }
 

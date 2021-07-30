@@ -1,9 +1,21 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useParams, Redirect } from "react-router-dom"
 
 import { setAlert } from "../reducers/alertReducer"
 import { likeBlog, deleteBlog, commentBlog } from "../reducers/blogsReducer"
+
+import {
+  Button,
+  Main,
+  ContentHeader,
+  ContentRow,
+  Header3,
+  Form,
+  Input,
+  InputGroup,
+  Highlight
+} from "../theme/styledComponents"
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -56,40 +68,46 @@ const Blog = () => {
     e.target.reset()
   }
 
+  if(!blog) {
+    return <Redirect to="/" />
+  }
+
   return (
-    <div>
-      <div className="blog-container">
-        <div className="blog-title">
+    <Main id="blog">
+      <div style={{ marginBottom: "10px" }}>
+        <ContentHeader flex>
           <span>{blog.title}</span>
           <span>
-            <button className="like-btn" onClick={() => handleBlogLikeButton(blog)}>
-              like
-            </button>
+            <Button onClick={() => handleBlogLikeButton(blog)}>like</Button>
             {user.username === blog.userId.username
               ?
-              <button  className="delete-btn" onClick={() => handleBlogDeleteButton(blog)}>
-                delete blog
-              </button>
+              <Button  className="delete-btn" onClick={() => handleBlogDeleteButton(blog)}>delete blog</Button>
               :
               <></>
             }
           </span>
-        </div>
-        <div className="blog-author">author: {blog.author}</div>
-        <div className="blog-details mt-5">
-          <div>{blog.url}</div>
-          <div>likes: {blog.likes}</div>
-          <div>added by: {blog.userId.name}</div>
-        </div>
+        </ContentHeader>
+        <ContentRow flex><Highlight>details</Highlight></ContentRow>
+        <ContentRow small>author: {blog.author}</ContentRow>
+        <ContentRow small>{blog.url}</ContentRow>
+        <ContentRow small>added by: {blog.userId.name}</ContentRow>
+        <ContentRow margin>likes: <Highlight>{blog.likes}</Highlight></ContentRow>
       </div>
-      <hr className="mt-5 mb-5" />
-      <h4>Comments</h4>
-      {blog.comments.map(comment => <div key={comment.id}>{comment.content}</div>)}
-      <form onSubmit={handleCommentSubmit}>
-        <input type="text" onChange={(e) => setComment(e.target.value)} />
-        <button type="submit">submit comment</button>
-      </form>
-    </div>
+      <Header3>Comments</Header3>
+      <ul>
+        {blog.comments.map(comment => <li key={comment.id}>{comment.content}</li>)}
+      </ul>
+      <Form inline onSubmit={handleCommentSubmit}>
+        <InputGroup>
+          <Input
+            type="text"
+            placeholder="Add a comment.."
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <Button type="submit">submit</Button>
+        </InputGroup>
+      </Form>
+    </Main>
   )
 }
 

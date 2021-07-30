@@ -1,30 +1,21 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React, { Fragment } from "react"
 import { useSelector } from "react-redux"
+
+import { AlertMsg } from "../theme/styledComponents"
 
 const Alert = () => {
   const { message, type } = useSelector(state => state.alert)
 
   const alertStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontSize: "20px",
-    margin: "5px",
     backgroundColor: type === "alert" ? "#fffafa" : "#fafffa",
     border: type === "alert" ? "2px solid #ffcccc" : "2px solid #ccffcc"
   }
 
   if(message) {
-    return <div style={alertStyle}>{message}</div>
+    return <AlertMsg style={alertStyle}>{message}</AlertMsg>
   } else {
-    return <div></div>
+    return <Fragment />
   }
-}
-
-Alert.propTypes = {
-  message: PropTypes.string,
-  type: PropTypes.string
 }
 
 export default Alert

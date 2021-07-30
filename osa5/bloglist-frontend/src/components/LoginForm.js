@@ -7,6 +7,8 @@ import { setAlert } from "../reducers/alertReducer"
 import loginService from "../services/login"
 import blogService from "../services/blogs"
 
+import { Button, Input, Form, InputGroup } from "../theme/styledComponents"
+
 // eslint-disable-next-line no-undef
 const app_env = process.env.REACT_APP_ENVIRONMENT
 
@@ -49,21 +51,25 @@ const LoginForm = () => {
   } // Log In Handler
 
   return (
-    <form style={{ display: "inline" }} onSubmit={logInHandler}>
-      <input
-        id="loginUsernameInput"
-        type="text"
-        placeholder="username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        id="loginPasswordInput"
-        type="password"
-        placeholder="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button id="loginBtn" type="submit">log in</button>
-    </form>
+    <Form inline onSubmit={logInHandler}>
+      <InputGroup inline>
+        <Input
+          id="loginUsernameInput"
+          type="text"
+          placeholder="username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </InputGroup>
+      <InputGroup inline>
+        <Input
+          id="loginPasswordInput"
+          type="password"
+          placeholder="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </InputGroup>
+      <Button id="loginBtn" type="submit">log in</Button>
+    </Form>
   )
 }
 

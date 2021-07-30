@@ -4,6 +4,22 @@ import { useDispatch } from "react-redux"
 import { setAlert } from "../reducers/alertReducer"
 import { createNewBlog } from "../reducers/blogsReducer"
 
+import styled from "styled-components"
+import {
+  Button,
+  Form,
+  Input,
+  InputGroup,
+  Header3
+} from "../theme/styledComponents"
+
+const Label = styled.label`
+  display: inline-block;
+  color: dimgray;
+  width: 50px;
+  padding-right: 5px;
+`
+
 const NewBlogForm = ({ togglerRef }) => {
   const dispatch = useDispatch()
 
@@ -28,8 +44,8 @@ const NewBlogForm = ({ togglerRef }) => {
 
   return (
     <span>
-      <h3 className="text-center">Post New Blog</h3>
-      <form
+      <Header3>Post New Blog</Header3>
+      <Form
         id="newBlogForm"
         style={{ display:"inline" }}
         onSubmit={(e) => handleNewBlogFormSubmit(e, {
@@ -38,28 +54,33 @@ const NewBlogForm = ({ togglerRef }) => {
           url: newBlogUrl
         })}
       >
-        <div className="form-group">
-          <label>title</label>
-          <input type="text" id="newBlogTitle" onChange={(e) => setNewBlogTitle(e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label>author</label>
-          <input type="text" id="newBlogAuthor" onChange={(e) => setNewBlogAuthor(e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label>url</label>
-          <input type="text" id="newBlogUrl" onChange={(e) => setNewBlogUrl(e.target.value)} />
-        </div>
-        <div
-          style={{
-            display: "inline-block",
-            width: "50%",
-            textAlign: "right",
-            marginTop: "5px"
-          }}>
-          <button id="submitNewBlogBtn" type="submit">post</button>
-        </div>
-      </form>
+        <InputGroup>
+          <Label>title</Label>
+          <Input wide
+            id="newBlogTitle"
+            type="text"
+            onChange={(e) => setNewBlogTitle(e.target.value)}
+          />
+        </InputGroup>
+        <InputGroup>
+          <Label>author</Label>
+          <Input wide
+            id="newBlogAuthor"
+            type="text"
+            onChange={(e) => setNewBlogAuthor(e.target.value)}
+          />
+        </InputGroup>
+        <InputGroup>
+          <Label>url</Label>
+          <Input wide
+            id="newBlogUrl"
+            type="text"
+            onChange={(e) => setNewBlogUrl(e.target.value)}
+          />
+        </InputGroup>
+        <Label />
+        <Button type="submit">post</Button>
+      </Form>
     </span>
   )
 }

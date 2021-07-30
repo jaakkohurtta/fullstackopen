@@ -9,10 +9,12 @@ import { getBlogs } from "./reducers/blogsReducer"
 import Blogs from "./components/Blogs"
 import Blog from "./components/Blog"
 import Header from "./components/Header"
-import Alert from "./components/Alerts"
+import Alert from "./components/Alert"
 import UserControl from "./components/UserControl"
 import Users from "./components/Users"
 import User from "./components/User"
+
+import { Container } from "./theme/styledComponents"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -23,7 +25,7 @@ const App = () => {
   }, []) // Load all blogs from db on page load
 
   return (
-    <div className="container">
+    <Container>
       <Router>
         <Header />
         <Alert />
@@ -45,7 +47,7 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </Container>
   )
 }
 

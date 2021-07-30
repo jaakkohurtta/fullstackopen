@@ -1,6 +1,9 @@
 import React from "react"
+import { createStore, combineReducers } from "redux"
+import { Provider } from "react-redux"
 import "@testing-library/jest-dom/extend-expect"
-import { fireEvent, render } from "@testing-library/react"
+import { render } from "@testing-library/react"
+import { MemoryRouter, Route } from "react-router-dom"
 // import { prettyDOM } from "@testing-library/dom"
 import Blog from "./Blog"
 
@@ -10,63 +13,62 @@ const testUser = {
 }
 
 const testBlog = {
-  id: 1234,
+  id: "1234",
   title: "A Test Blog",
   author: "Test Author",
   likes: "42",
   url: "https://atestblog.com/",
-  userId: testUser
+  userId: testUser,
+  comments: [{ content: "first comment!", id: "1" }]
 }
 
-test("renders blog", () => {
-  // component for test blog
-  const blogComponent = render(<Blog blog={testBlog} user={testUser} />)
-  const blogContainer = blogComponent.container.querySelector(".blog-container")
-  const blogDetails = blogComponent.container.querySelector(".blog-details")
+const userReducer = (state = null, action) => {
+  switch(action.type) {
+  case "SET_USER":
+    return action.payload
+  default:
+    return state
+  }
+}
 
-  // console.log(blogContainer)
+const blogsReducer = (state = [], action) => {
+  switch(action.type) {
+  case "ADD_BLOG":
+    return state.concat(action.payload)
+  default:
+    return state
+  }
+}
 
-  expect(blogContainer).toHaveTextContent("A Test Blog")
-  expect(blogContainer).toHaveTextContent("Test Author")
-  expect(blogDetails).toHaveStyle("display: none")
-})
+const reducer = combineReducers({ user: userReducer, blogs: blogsReducer })
+const store = createStore(reducer)
 
-test("clicking details shows blog details", () => {
-  // component for test blog
+test("renders blog component", ()  => {
+  store.dispatch({ type: "SET_USER", payload: testUser })
+  store.dispatch({ type: "ADD_BLOG", payload: testBlog })
+
+  jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    useParams: () => ({
+      id: "1234"
+    }),
+    useRouteMatch: () => ({ url: "/blogs/blog.id" })
+  }))
+
   const blogComponent = render(
-    <Blog
-      blog={testBlog}
-      user={testUser}
-    />
+    <Provider store={store}>
+      <MemoryRouter initialEntries={["/blogs/1234"]}>
+        <Route path="/blogs/:id">
+          <Blog />
+        </Route>
+      </MemoryRouter>
+    </Provider>
   )
-  const blogDetails = blogComponent.container.querySelector(".blog-details")
-  const detailsBtn = blogComponent.container.querySelector(".details-btn")
 
-  // console.log(prettyDOM(detailsBtn))
-  // console.log(userEvent)
+  // console.log(prettyDOM(blogComponent.container))
 
-  fireEvent.click(detailsBtn)
-
-  expect(detailsBtn).toHaveTextContent("close")
-  expect(blogDetails).not.toHaveStyle("display: none")
-})
-
-test("clicking like button twice is handled correctly", () => {
-  const likeButtonClickHandler = jest.fn()
-  // component for test blog
-  const blogComponent = render(
-    <Blog
-      blog={testBlog}
-      user={testUser}
-      handleBlogLikeButton={likeButtonClickHandler}
-    />
-  )
-  const likeBtn = blogComponent.container.querySelector(".like-btn")
-
-  // console.log(prettyDOM(likeBtn))
-
-  fireEvent.click(likeBtn)
-  fireEvent.click(likeBtn)
-
-  expect(likeButtonClickHandler).toHaveBeenCalledTimes(2)
+  expect(blogComponent.container).toHaveTextContent("A Test Blog")
+  expect(blogComponent.container).toHaveTextContent("Test Author")
+  expect(blogComponent.container).toHaveTextContent("added by: Test User")
+  expect(blogComponent.container).toHaveTextContent("likes: 42")
 })
