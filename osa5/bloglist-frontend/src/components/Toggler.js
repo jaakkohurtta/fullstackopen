@@ -15,11 +15,12 @@ const Toggler = React.forwardRef((props, ref) => {
   }
 
   const handleTogglerClick = (e) => {
-    // console.log(e.target.id)
+    // console.log(e)
     if(e.target.id && e.target.id !== "NewBlogForm") {
       e.target.id === "UserControl"
         ? props.setActiveForm(null)
         : props.setActiveForm(e.target.id)
+
     }
 
     toggleVisibility()

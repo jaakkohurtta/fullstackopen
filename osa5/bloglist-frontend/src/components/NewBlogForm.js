@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React from "react"
 import { useDispatch } from "react-redux"
 
 import { setAlert } from "../reducers/alertReducer"
 import { createNewBlog } from "../reducers/blogsReducer"
+import { useField } from "../hooks/index"
 
 import styled from "styled-components"
 import {
@@ -23,9 +24,9 @@ const Label = styled.label`
 const NewBlogForm = ({ togglerRef }) => {
   const dispatch = useDispatch()
 
-  const [newBlogTitle, setNewBlogTitle] = useState("")
-  const [newBlogAuthor, setNewBlogAuthor] = useState("")
-  const [newBlogUrl, setNewBlogUrl] = useState("")
+  const newBlogTitle = useField("text", null)
+  const newBlogAuthor = useField("text", null)
+  const newBlogUrl = useField("text", null)
 
   const handleNewBlogFormSubmit = async (e, newBlog) => {
     // console.log(newBlog)
@@ -49,34 +50,22 @@ const NewBlogForm = ({ togglerRef }) => {
         id="newBlogForm"
         style={{ display:"inline" }}
         onSubmit={(e) => handleNewBlogFormSubmit(e, {
-          title: newBlogTitle,
-          author: newBlogAuthor,
-          url: newBlogUrl
+          title: newBlogTitle.props.value,
+          author: newBlogAuthor.props.value,
+          url: newBlogUrl.props.value
         })}
       >
         <InputGroup>
           <Label>title</Label>
-          <Input wide
-            id="newBlogTitle"
-            type="text"
-            onChange={(e) => setNewBlogTitle(e.target.value)}
-          />
+          <Input wide {...newBlogTitle.props} />
         </InputGroup>
         <InputGroup>
           <Label>author</Label>
-          <Input wide
-            id="newBlogAuthor"
-            type="text"
-            onChange={(e) => setNewBlogAuthor(e.target.value)}
-          />
+          <Input wide {...newBlogAuthor.props} />
         </InputGroup>
         <InputGroup>
           <Label>url</Label>
-          <Input wide
-            id="newBlogUrl"
-            type="text"
-            onChange={(e) => setNewBlogUrl(e.target.value)}
-          />
+          <Input wide {...newBlogUrl.props} />
         </InputGroup>
         <Label />
         <Button type="submit">post</Button>

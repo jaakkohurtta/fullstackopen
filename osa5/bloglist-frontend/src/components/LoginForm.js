@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { useDispatch } from "react-redux"
 
 import { setUser } from "../reducers/userReducer"
@@ -6,6 +6,7 @@ import { getUsers } from "../reducers/usersReducer"
 import { setAlert } from "../reducers/alertReducer"
 import loginService from "../services/login"
 import blogService from "../services/blogs"
+import { useField } from "../hooks/index"
 
 import { Button, Input, Form, InputGroup } from "../theme/styledComponents"
 
@@ -15,15 +16,18 @@ const app_env = process.env.REACT_APP_ENVIRONMENT
 const LoginForm = () => {
   const dispatch = useDispatch()
 
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const username = useField("text", "username")
+  const password = useField("password", "password")
 
   const logInHandler = async (e) => {
     e.preventDefault()
 
     // console.log(username, password)
     try {
-      const user = await loginService.logIn({ username, password })
+      const user = await loginService.logIn({
+        username: username.props.value,
+        password: password.props.value
+      })
       dispatch(setUser(user))
       dispatch(getUsers())
       blogService.setToken(user.token)
@@ -53,20 +57,10 @@ const LoginForm = () => {
   return (
     <Form inline onSubmit={logInHandler}>
       <InputGroup inline>
-        <Input
-          id="loginUsernameInput"
-          type="text"
-          placeholder="username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <Input {...username.props} />
       </InputGroup>
       <InputGroup inline>
-        <Input
-          id="loginPasswordInput"
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <Input {...password.props} />
       </InputGroup>
       <Button id="loginBtn" type="submit">log in</Button>
     </Form>

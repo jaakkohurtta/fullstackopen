@@ -1,26 +1,27 @@
-import React, { useState } from "react"
+import React from "react"
 import { useDispatch } from "react-redux"
 import PropTypes from "prop-types"
 
 import { setAlert } from "../reducers/alertReducer"
 import signupService from "../services/signup"
+import { useField } from "../hooks/index"
 
 import { Button, Input, Form, InputGroup } from "../theme/styledComponents"
 
 const SignUpForm = ({ setActiveForm }) => {
   const dispatch = useDispatch()
 
-  const [name, setName] = useState("")
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const name = useField("text", "full name")
+  const username = useField("text", "username")
+  const password = useField("password", "password")
 
   const signUpHandler = async (e) => {
     e.preventDefault()
 
     const newUserObj = {
-      name,
-      username,
-      password
+      name: name.props.value,
+      username: username.props.value,
+      password: password.props.value
     }
 
     try {
@@ -47,25 +48,13 @@ const SignUpForm = ({ setActiveForm }) => {
   return (
     <Form inline onSubmit={signUpHandler}>
       <InputGroup inline>
-        <Input
-          type="text"
-          placeholder="name"
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Input {...name.props} />
       </InputGroup>
       <InputGroup inline>
-        <Input
-          type="text"
-          placeholder="username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <Input {...username.props} />
       </InputGroup>
       <InputGroup inline>
-        <Input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <Input {...password.props} />
       </InputGroup>
       <Button id="submitSignupBtn" type="submit">sign up</Button>
     </Form>
