@@ -57,10 +57,10 @@ const LoginForm = () => {
   return (
     <Form inline onSubmit={logInHandler}>
       <InputGroup inline>
-        <Input {...username.props} />
+        <Input id="loginUsername" {...username.props} />
       </InputGroup>
       <InputGroup inline>
-        <Input {...password.props} />
+        <Input id="loginPassword" {...password.props} />
       </InputGroup>
       <Button id="loginBtn" type="submit">log in</Button>
     </Form>

@@ -36,16 +36,16 @@ describe("Bloglist app", function() {
   describe("Login", function() {
     it("succeeds with correct credentials", function() {
       cy.contains("login >").click()
-      cy.get("#loginUsernameInput").type("testuser")
-      cy.get("#loginPasswordInput").type(("test123"))
+      cy.get("#loginUsername").type("testuser")
+      cy.get("#loginPassword").type(("test123"))
       cy.get("#loginBtn").click()
 
       cy.contains("Test User logged in.")
     })
     it("fails with incorrect credentials", function() {
       cy.contains("login >").click()
-      cy.get("#loginUsernameInput").type("testuser")
-      cy.get("#loginPasswordInput").type(("test1234"))
+      cy.get("#loginUsername").type("testuser")
+      cy.get("#loginPassword").type(("test1234"))
       cy.get("#loginBtn").click()
 
       cy.contains("Invalid username or password.")
@@ -66,7 +66,6 @@ describe("Bloglist app", function() {
       })
 
       cy.contains("A New Test Blog")
-      cy.contains("John Doe")
     })
 
     it("a blog like is registered as expected", function() {
@@ -76,7 +75,8 @@ describe("Bloglist app", function() {
         url: "http://www.anewtestblog.com"
       })
 
-      cy.get(".like-btn").click()
+      cy.contains("A New Test Blog").click()
+      cy.get("#likeBtn").click()
       cy.contains("likes: 1")
     })
 
@@ -87,8 +87,8 @@ describe("Bloglist app", function() {
         url: "http://www.anewtestblog.com"
       })
 
-      cy.get(".details-btn").click()
-      cy.get(".delete-btn").click()
+      cy.contains("A New Test Blog").click()
+      cy.get("#deleteBtn").click()
       // eslint-disable-next-line quotes
       cy.contains('"A New Test Blog" deleted.')
     })
@@ -163,9 +163,9 @@ describe("Bloglist app", function() {
               console.log(blogs)
               cy.visit("http://localhost:3000/")
                 .then(() => {
-                  cy.get(".blog-container").eq(0).contains("likes: 35")
-                  cy.get(".blog-container").eq(1).contains("likes: 22")
-                  cy.get(".blog-container").eq(2).contains("likes: 10")
+                  cy.get(".blog-container").eq(0).contains("A New Test Blog 2")
+                  cy.get(".blog-container").eq(1).contains("A New Test Blog 3")
+                  cy.get(".blog-container").eq(2).contains("A New Test Blog")
                 })
             })
         })

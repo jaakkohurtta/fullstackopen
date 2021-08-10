@@ -48,13 +48,13 @@ const SignUpForm = ({ setActiveForm }) => {
   return (
     <Form inline onSubmit={signUpHandler}>
       <InputGroup inline>
-        <Input {...name.props} />
+        <Input id="signupName" {...name.props} />
       </InputGroup>
       <InputGroup inline>
-        <Input {...username.props} />
+        <Input id="signupUsername" {...username.props} />
       </InputGroup>
       <InputGroup inline>
-        <Input {...password.props} />
+        <Input id="signupPassword" {...password.props} />
       </InputGroup>
       <Button id="submitSignupBtn" type="submit">sign up</Button>
     </Form>

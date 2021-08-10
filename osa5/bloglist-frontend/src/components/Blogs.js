@@ -31,7 +31,7 @@ const Blogs = () => {
       </ContentHeader>
       <ContentRow flex><Highlight>blogs</Highlight></ContentRow>
       {blogs.map(blog =>
-        <ContentRow margin key={blog.id}>
+        <ContentRow className="blog-container" margin key={blog.id}>
           <StyledLink to={`/blogs/${blog.id}`}>{blog.title}</StyledLink>
         </ContentRow>
       )}

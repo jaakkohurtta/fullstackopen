@@ -78,10 +78,10 @@ const Blog = () => {
         <ContentHeader flex>
           <span>{blog.title}</span>
           <span>
-            <Button onClick={() => handleBlogLikeButton(blog)}>like</Button>
+            <Button id="likeBtn" onClick={() => handleBlogLikeButton(blog)}>like</Button>
             {user.username === blog.userId.username
               ?
-              <Button  className="delete-btn" onClick={() => handleBlogDeleteButton(blog)}>delete blog</Button>
+              <Button id="deleteBtn" onClick={() => handleBlogDeleteButton(blog)}>delete blog</Button>
               :
               <></>
             }
