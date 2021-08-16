@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require("apollo-server")
+const { ApolloServer, gql, UserInputError } = require("apollo-server")
 const { ApolloServerPluginLandingPageGraphQLPlayground } = require("apollo-server-core")
 const { v1: uuid } = require("uuid")
 
@@ -148,6 +148,12 @@ const resolvers = {
   },
   Mutation: {
     addBook: (root, args) => {
+      const year = new Date().getFullYear()
+      if(args.published > year) {
+        throw new UserInputError("Year published can not be in the future", {
+          invalidArgs: args.published
+        })
+      }
       const book = { ...args, id: uuid() }
       if(!authors.find(author => author.name === args.author)) {
         authors = authors.concat({ 
@@ -159,6 +165,13 @@ const resolvers = {
       return book
     },
     editAuthor: (root, args) => {
+      const year = new Date().getFullYear()
+      if(args.setBornTo > year) {
+        throw new UserInputError("Author birth year can not be in the future", {
+          invalidArgs: args.setBornTo
+        })
+      }
+
       const author = authors.find(author => author.name === args.name)
       if(!author) {
         return null

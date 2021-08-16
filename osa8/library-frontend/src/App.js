@@ -5,9 +5,18 @@ import NewBook from './components/NewBook'
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [alertMsg, setAlertMsg] = useState("")
+
+  const showAlert = (msg) => {
+    setAlertMsg(msg)
+    setTimeout(() => {
+      setAlertMsg("")
+    }, 5000)
+  }
 
   return (
     <div>
+      {alertMsg !== "" ? <div style={{ color: "red", margin: "10px 0" }}>{alertMsg}</div> : <></>}
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
@@ -16,6 +25,7 @@ const App = () => {
 
       <Authors
         show={page === 'authors'}
+        setAlert={showAlert}
       />
 
       <Books
@@ -24,6 +34,7 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+        setAlert={showAlert}
       />
 
     </div>
