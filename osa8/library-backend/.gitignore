@@ -1,1 +1,3 @@
 .tunnit
+.env
+node_modules/
