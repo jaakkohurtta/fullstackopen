@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client"
 
 import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 
-const NewBook = ({ show, setAlert }) => {
+const AddBook = ({ show, setAlert }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState(0)
@@ -24,8 +24,6 @@ const NewBook = ({ show, setAlert }) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    
-    console.log(title, author, published, genres)
     
     createBook({
       variables: {
@@ -93,4 +91,4 @@ const NewBook = ({ show, setAlert }) => {
   )
 }
 
-export default NewBook
+export default AddBook

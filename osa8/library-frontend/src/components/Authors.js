@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@apollo/client"
 
 import { ALL_AUTHORS, UPDATE_AUTHOR } from "../queries"
 
-const Authors = ({ show, setAlert }) => {
+const Authors = ({ show, setAlert, token }) => {
   const [author, setAuthor] = useState("")
   const [birthYear, setBirthYear] = useState("")
 
@@ -36,7 +36,7 @@ const Authors = ({ show, setAlert }) => {
   }
 
   const authors = result.data.allAuthors
-  
+
   return (
     <div>
       <h2>authors</h2>
@@ -60,12 +60,16 @@ const Authors = ({ show, setAlert }) => {
           )}
         </tbody>
       </table>
-      <h2>set birthyear</h2>
-      <select onChange={({ target }) => setAuthor(target.value)}>
-        {authors.map(a => <option key={a.name}>{a.name}</option>)}
-      </select>
-      <input type="text" placeholder="birth year" onChange={({ target }) => setBirthYear(target.value)} /> 
-      <button onClick={() => handleUpdateAuthor()}>update author</button>
+      {token && 
+        <div>
+          <h2>set birthyear</h2>
+          <select onChange={({ target }) => setAuthor(target.value)}>
+            {authors.map(a => <option key={a.name}>{a.name}</option>)}
+          </select>
+          <input type="text" placeholder="birth year" onChange={({ target }) => setBirthYear(target.value)} /> 
+          <button onClick={() => handleUpdateAuthor()}>update author</button>
+        </div>
+      }
     </div>
   )
 }
