@@ -1,11 +1,12 @@
-const { ApolloServer, gql, UserInputError } = require("apollo-server")
+const { ApolloServer, gql, UserInputError, AuthenticationError } = require("apollo-server")
 const { ApolloServerPluginLandingPageGraphQLPlayground } = require("apollo-server-core")
 const mongoose = require("mongoose")
-const { v1: uuid } = require("uuid")
+const jwt = require("jsonwebtoken")
 const config = require("./config")
 
 const Book = require("./models/book")
 const Author = require("./models/author")
+const User = require("./models/user")
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
@@ -34,11 +35,21 @@ const typeDefs = gql`
     id: ID!
     genres: [String!]!
   }
+  type User {
+    username: String!
+    password: String!
+    favouriteGenre: String!
+    id: ID!
+  }
+  type Token {
+    value: String!
+  }
   type Query {
     authorsCount: Int!
     booksCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    me: User
   }
   type Mutation {
     addBook(
@@ -51,6 +62,14 @@ const typeDefs = gql`
       name: String!
       setBornTo: Int!
     ) : Author
+    createUser(
+      username: String!
+      favouriteGenre: String!
+    ) : User
+    loginUser(
+      username: String!
+      password: String!
+    ) : Token
   }
 `
 
@@ -77,7 +96,10 @@ const resolvers = {
       }
       
     },
-    allAuthors: () => Author.find({})
+    allAuthors: () => Author.find({}),
+    me: (root, args, contenxt) => {
+      return context.currentUser
+    }
   },
   Book: {
     title: (root) => root.title,
@@ -97,7 +119,12 @@ const resolvers = {
     }
   },
   Mutation: {
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      const currentUser = context.currentUser  
+      if(!currentUser) {
+        throw new AuthenticationError("Unauthorized request")
+      }
+      
       const year = new Date().getFullYear()
       if(args.published > year) {
         throw new UserInputError("Year published can not be in the future", {
@@ -110,7 +137,14 @@ const resolvers = {
 
       if(!author) {
         author = new Author({ name: args.author })
-        await author.save()
+        try {
+          await author.save()
+        }
+        catch(error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args
+          })
+        }
       } 
 
       // console.log(author._id.toString())
@@ -119,12 +153,25 @@ const resolvers = {
         title: args.title,
         published: args.published,
         genres: args.genres,
-        author: author
+        author
       })
 
-      return book.save()
+      try {
+        await book.save()
+      } 
+      catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+      return book
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if(!currentUser) {
+        throw new AuthenticationError("Unauthorized request")
+      }
+
       const year = new Date().getFullYear()
       if(args.setBornTo > year) {
         throw new UserInputError("Author birth year can not be in the future", {
@@ -138,14 +185,64 @@ const resolvers = {
       }
 
       author.born = args.setBornTo
-      return author.save()
-    }
+
+      try {
+        author.save()
+      }
+      catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      
+      }
+      return author
+    },
+    createUser: (root, args) => {
+      const user = new User({
+        username: args.username,
+        password: "p4ssw0rd",
+        favouriteGenre: args.favouriteGenre
+      })
+
+      try {
+        user.save()
+      }
+      catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+
+      return user
+    },
+    loginUser: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+
+      if(!user || user.password !== args.password) {
+        throw new UserInputError("Wrong username of password")
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id
+      }
+
+      return { value: jwt.sign(userForToken, config.JWT_SECRET) }
+    } 
   }
 }
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null
+    if(auth && auth.toLowerCase().startsWith("bearer ")) {
+      const decodedToken = jwt.verify(auth.substring(7), config.JWT_SECRET)
+      const currentUser = await User.findById(decodedToken.id)
+      return { currentUser }
+    }
+  },
   plugins: [ ApolloServerPluginLandingPageGraphQLPlayground() ]
 })
 
