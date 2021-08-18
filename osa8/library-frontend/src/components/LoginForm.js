@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useMutation } from "@apollo/client"
 import { LOGIN_USER } from "../queries"
 
-const LoginForm = ({ show, setAlert, setToken, setPage }) => {
+const LoginForm = ({ setAlert, setToken, setPage  }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
@@ -17,15 +17,11 @@ const LoginForm = ({ show, setAlert, setToken, setPage }) => {
       // console.log(result.data)
       const token = result.data.loginUser.value
       setToken(token)
-      setPage("books")
       localStorage.setItem("libraryapp-user-token", token)
+      setPage("authors")
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data])
-
-  if(!show) {
-    return null
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()

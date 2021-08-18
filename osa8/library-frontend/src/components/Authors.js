@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@apollo/client"
 
 import { ALL_AUTHORS, UPDATE_AUTHOR } from "../queries"
 
-const Authors = ({ show, setAlert, token }) => {
+const Authors = ({ setAlert, token }) => {
   const [author, setAuthor] = useState("")
   const [birthYear, setBirthYear] = useState("")
 
@@ -15,10 +15,6 @@ const Authors = ({ show, setAlert, token }) => {
       setAlert(error.graphQLErrors[0].message)
     }
   })
-
-  if (!show) {
-    return null
-  }
 
   if (result.loading) {
     return <div>Loading...</div>

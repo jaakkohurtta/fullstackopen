@@ -1,22 +1,31 @@
-import React, { useState } from "react"
-import { useQuery } from "@apollo/client"
+import React, { useState, useEffect } from "react"
+import { useQuery, useLazyQuery } from "@apollo/client"
 
-import { ALL_BOOKS } from "../queries"
+import { ALL_BOOKS, BOOKS_BY_GENRE } from "../queries"
 
-const Books = (props) => {
+const Books = () => {
   const [filter, setFilter] = useState("")
   const result = useQuery(ALL_BOOKS)
+
+  const [queryBooksByGenre, queryBooksByGenreResult]
+    = useLazyQuery(BOOKS_BY_GENRE, { variables: { genre: filter }})
   // console.log(result)
 
-  if (!props.show) {
-    return null
-  }
+  useEffect(() => {
+    queryBooksByGenre()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter])
 
-  if (result.loading) {
+  if (result.loading || queryBooksByGenreResult.loading) {
     return <div>Loading...</div>
   }
 
   const books = result.data.allBooks
+  let filteredBooks
+  if(filter !== "") {
+    filteredBooks = queryBooksByGenreResult.data.allBooks
+  }
+
   const genres = ["all genres"]
   books.forEach(book => {
     book.genres.forEach(genre => {
@@ -26,14 +35,16 @@ const Books = (props) => {
     })
   })
 
+  const booksToDisplay = filter === "" ? books : filteredBooks
+
   return (
     <div>
       <h2>books</h2>
-      <div>in {filter === "" 
+      <p>in {filter === "" 
                 ? <strong>all genres</strong>
                 : <span>genre <strong>{filter}</strong></span>
                 }
-      </div>
+      </p>
       <table>
         <tbody>
           <tr>
@@ -45,9 +56,11 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {books
+          {booksToDisplay
+            /* legacy-koodia osasta 8.19
             .filter(book => book.genres
             .find(genre => genre === (filter !== "" ? filter : genre)))
+            */
             .map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
