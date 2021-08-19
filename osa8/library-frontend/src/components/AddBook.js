@@ -1,27 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState } from "react"
 import { useMutation } from "@apollo/client"
 
-import { CREATE_BOOK, ALL_AUTHORS } from '../queries'
+import { CREATE_BOOK, ALL_AUTHORS, ALL_BOOKS, ALL_GENRES } from "../queries"
 
-const AddBook = ({ setAlert, updateApolloCache }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
+const AddBook = ({ show, setAlert, updateApolloCache }) => {
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
   const [published, setPublished] = useState(0)
-  const [genre, setGenre] = useState('')
+  const [genre, setGenre] = useState("")
   const [genres, setGenres] = useState([])
 
   const [ createBook ] = useMutation(CREATE_BOOK, {
     refetchQueries: [
-      { query: ALL_AUTHORS }
+      { query: ALL_AUTHORS },
+      { query: ALL_GENRES }
+      // { query: ALL_BOOKS }
     ],
     update: (store, response) => {
-      updateApolloCache(response.data.addBook)
+      updateApolloCache("allBooks", ALL_BOOKS, response.data.addBook)
     },
     onError: (error) => {
       // console.log(error)
       setAlert(error.graphQLErrors[0].message)
     }
   })
+
+  if(!show) {
+    return null
+  }
 
   const submit = async (event) => {
     event.preventDefault()
@@ -35,16 +41,16 @@ const AddBook = ({ setAlert, updateApolloCache }) => {
       }
     })
 
-    setTitle('')
-    setPublished('')
-    setAuthor('')
+    setTitle("")
+    setPublished("")
+    setAuthor("")
     setGenres([])
-    setGenre('')
+    setGenre("")
   }
 
   const addGenre = () => {
     setGenres(genres.concat(genre))
-    setGenre('')
+    setGenre("")
   }
 
   return (
@@ -70,7 +76,7 @@ const AddBook = ({ setAlert, updateApolloCache }) => {
         <div>
           published
           <input
-            type='number'
+            type="number"
             value={published}
             onChange={({ target }) => setPublished(target.value)}
             required
@@ -84,9 +90,9 @@ const AddBook = ({ setAlert, updateApolloCache }) => {
           <button onClick={addGenre} type="button">add genre</button>
         </div>
         <div>
-          genres: {genres.join(' ')}
+          genres: {genres.join(" ")}
         </div>
-        <button type='submit'>create book</button>
+        <button type="submit">create book</button>
       </form>
     </div>
   )

@@ -14,6 +14,7 @@ const bookTypeDefs = gql`
   type Query {
     booksCount: Int!
     allBooks(author: String, genre: String): [Book!]!
+    allGenres: [String!]!
   }
   type Book {
     title: String!
@@ -32,6 +33,7 @@ const bookTypeDefs = gql`
   }
   type Subscription {
     bookAdded: Book!
+    newAuthor: Author!
   }
 `
 
@@ -56,6 +58,19 @@ const bookResolvers = {
         return Book.find({})
       }
     },
+    allGenres: async () => {
+      const books = await Book.find({})
+      let genres = []
+      books.forEach(book => {
+        book.genres.forEach(genre => {
+          if(!genres.find(g => g === genre)) {
+            genres.push(genre)
+          }
+        })
+      })
+
+      return genres
+    }
   },
   Book: {
     title: (root) => root.title,
@@ -78,8 +93,10 @@ const bookResolvers = {
       }
 
       let author = await Author.findOne({ name: args.author })
+      let newAuthor = false
       if(!author) {
         author = new Author({ name: args.author })
+        newAuthor = true
       }
     
       const book = new Book({ 
@@ -102,12 +119,18 @@ const bookResolvers = {
 
       // console.log(author)
       pubsub.publish("BOOK_ADDED", { bookAdded: book })
+      if(newAuthor) {
+        pubsub.publish("NEW_AUTHOR", { newAuthor: author })
+      }
       return book
     }
   },
   Subscription: {
     bookAdded: {
       subscribe: () => pubsub.asyncIterator(["BOOK_ADDED"])
+    },
+    newAuthor: {
+      subscribe: () => pubsub.asyncIterator(["NEW_AUTHOR"])
     }
   }
 }

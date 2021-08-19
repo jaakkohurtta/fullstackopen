@@ -6,22 +6,26 @@ import { BOOKS_BY_GENRE } from "../queries"
 const Recommend = ({ user }) => {
   // console.log(user.favouriteGenre)
 
-  const [queryBooksByGenre, result] = useLazyQuery(BOOKS_BY_GENRE, {
-    variables: { genre: user.favouriteGenre }
-  })
+  const [queryBooksByGenre, queryBooksByGenreResult]
+    = useLazyQuery(BOOKS_BY_GENRE,
+      {
+        variables: { genre: user.favouriteGenre },
+        fetchPolicy: "no-cache"
+      }
+    )
 
   useEffect(() => {
     if(user) {
       queryBooksByGenre()
     }
-  }, [queryBooksByGenre, user])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
-  if(result.loading || !result.data) {
+  if(queryBooksByGenreResult.loading || !queryBooksByGenreResult.data) {
     return <div>Loading your personal recommendation..</div>
   }
-
-  // console.log(result.data)
-  const books = result.data.allBooks
+  
+  const books = queryBooksByGenreResult.data.allBooks
 
   return (
     <div>
@@ -39,11 +43,11 @@ const Recommend = ({ user }) => {
             </th>
           </tr>
           {books
-            .map(a =>
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
+            .map(book =>
+            <tr key={book.title}>
+              <td>{book.title}</td>
+              <td>{book.author.name}</td>
+              <td>{book.published}</td>
             </tr>
           )}
         </tbody>

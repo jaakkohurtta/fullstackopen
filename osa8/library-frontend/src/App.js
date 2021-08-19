@@ -6,7 +6,7 @@ import AddBook from "./components/AddBook"
 import Recommend from "./components/Recommend"
 import LoginForm from "./components/LoginForm"
 
-import { WHO_AM_I, BOOK_ADDED, ALL_BOOKS } from "./queries"
+import { WHO_AM_I, BOOK_ADDED, ALL_BOOKS, ALL_AUTHORS, NEW_AUTHOR, ALL_GENRES } from "./queries"
 
 const App = () => {
   const [page, setPage] = useState("authors")
@@ -15,34 +15,47 @@ const App = () => {
   const [user, setUser] = useState(null)
   const client = useApolloClient()
 
+  const whoAmI = useQuery(WHO_AM_I)
+  const allGenres = useQuery(ALL_GENRES)
+  
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData}) => {
-      const addedBook = subscriptionData.data.bookAdded 
-      showAlert(`${addedBook.title} by ${addedBook.author.name} added to library.`)
-      updateApolloCache(addedBook)
+      const newBook = subscriptionData.data.bookAdded 
+      showAlert(`${newBook.title} by ${newBook.author.name} added to library.`)
+      updateApolloCache("allBooks", ALL_BOOKS, newBook)
+      allGenres.refetch()
     }
   })
 
-  const { refetch } = useQuery(WHO_AM_I)
+  useSubscription(NEW_AUTHOR, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const newAuthor = subscriptionData.data.newAuthor
+      updateApolloCache("allAuthors", ALL_AUTHORS, newAuthor)
+    } 
+  })
 
   useEffect(() => {
     const queryUserAfterLogin = async () => {
-      const result = await refetch()
-      setUser(result.data.me)
+      if(token) {
+        const result = await whoAmI.refetch()
+        setUser(result.data.me)
+      }
     }
     queryUserAfterLogin()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
-  const updateApolloCache = (addedBook) => {
+  const updateApolloCache = (cache, query, update) => {
     const includedIn = (set, object) => set.map(p => p.id).includes(object.id)  
+    
+    const dataInStore = client.readQuery({ query })
+    const data = {}
+    data[cache] = dataInStore[cache].concat(update)
 
-    const dataInStore = client.readQuery({ query: ALL_BOOKS })
-    if (!includedIn(dataInStore.allBooks, addedBook)) {
-      client.writeQuery({
-        query: ALL_BOOKS,
-        data: { allBooks : dataInStore.allBooks.concat(addedBook) }
-      })
+    // console.log("updateApolloCache data:", data)
+
+    if (!includedIn(dataInStore[cache], update)) {
+      client.writeQuery({ query, data })
     }  
   }
 
@@ -76,36 +89,33 @@ const App = () => {
               <button onClick={() => setPage("recommend")}>recommend</button>
               <button onClick={() => logOut()}>logout</button>
             </span>
-        }
-        
+        }        
       </div>
       
-      {page === "authors" && 
-        <Authors
-          setAlert={showAlert}
-          token={token}
-        />      
-      }
+      <Authors
+        show={page === "authors"}
+        setAlert={showAlert}
+        token={token}
+      />
 
-      {page === "books" &&
-        <Books />      
-      }
+      <Books
+        show={page === "books"} 
+        genres={!allGenres.loading ? allGenres.data.allGenres : ["all genres"]}       
+      />            
 
-      {page === "login" &&
-        <LoginForm
-          setAlert={showAlert}
-          setToken={setToken}
-          setPage={setPage}
-        />      
-      }
+      <LoginForm
+        show={page === "login"}
+        setAlert={showAlert}
+        setToken={setToken}
+        setPage={setPage}
+      />      
 
-      {page === "add" &&
-        <AddBook
-          setAlert={showAlert}
-          updateApolloCache={updateApolloCache}
-        />      
-      }
-
+      <AddBook
+        show={page === "add"}
+        setAlert={showAlert}
+        updateApolloCache={updateApolloCache}
+      />      
+      
       {page === "recommend" &&
       <Recommend 
         token={token}
