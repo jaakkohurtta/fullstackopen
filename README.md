@@ -21,3 +21,6 @@
    * [Anekdootit react-router](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa7/anecdotes-routed)
    * [Country-hook](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa7/country-hook)
    * [Ultimate-hooks](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa7/ultimate-hooks)
+8. [osa8](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa8)
+   * [react frontend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa8/library-frontend)
+   * [graphql backend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa8/library-backend)
