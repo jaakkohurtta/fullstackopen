@@ -24,3 +24,5 @@
 8. [osa8](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa8)
    * [react frontend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa8/library-frontend)
    * [graphql backend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa8/library-backend)
+9. [osa9](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9)
+   * [TypeScript 101](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9/typescript101)
