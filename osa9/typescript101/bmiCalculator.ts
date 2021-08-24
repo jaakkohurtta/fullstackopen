@@ -10,9 +10,8 @@ export const calculateBmi = (height: number, weight: number): string => {
   } else {
     return "obese";
   }
-}
+};
 
-/* Legacy
 interface ParseBmiArgsResult {
   height: number,
   weight: number
@@ -30,21 +29,21 @@ const parseBmiArgs = (args: Array<string>): ParseBmiArgsResult => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   } else {
-    throw new Error("Please provide valid numbers")
+    throw new Error("Please provide valid numbers");
+  }
+};
+
+// console.log(process.argv);
+
+if(process.argv[1] !== "app.ts") {
+  try {
+    const { height, weight } = parseBmiArgs(process.argv);
+    console.log(calculateBmi(height, weight));
+  } 
+  catch(error) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    console.log("Error,", error.message);
   }
 }
-*/
-
-// console.log(process.argv)
-
-/*
-try {
-  const { height, weight } = parseBmiArgs(process.argv)
-  console.log(calculateBmi(height, weight))
-} 
-catch(error) {
-  console.log("Error,", error.message)
-}
-*/
