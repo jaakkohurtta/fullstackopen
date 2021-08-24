@@ -1,23 +1,24 @@
+export const calculateBmi = (height: number, weight: number): string => {
+  const bmi = weight / (((height/100)**2));
+
+  if(bmi < 18.5) {
+    return "underweight";
+  } else if(bmi < 25) {
+    return "normal weight";
+  } else if(bmi < 30) {
+    return "overweight";
+  } else {
+    return "obese";
+  }
+}
+
+/* Legacy
 interface ParseBmiArgsResult {
   height: number,
   weight: number
 }
 
-const calculateBmi = (height: number, weight: number): string => {
-  const bmi = weight / (((height/100)**2));
-
-  if(bmi < 18.5) {
-    return `underweight, bmi: ${bmi}`;
-  } else if(bmi < 25) {
-    return `normal weight, bmi: ${bmi}`;
-  } else if(bmi < 30) {
-    return `overweight, bmi: ${bmi}`;
-  } else {
-    return `obese, bmi: ${bmi}`;
-  }
-}
-
-const parseArgs = (args: Array<string>): ParseBmiArgsResult => {
+const parseBmiArgs = (args: Array<string>): ParseBmiArgsResult => {
   if(args.length > 4) {
     throw new Error("Too many arguments");
   }
@@ -34,13 +35,16 @@ const parseArgs = (args: Array<string>): ParseBmiArgsResult => {
     throw new Error("Please provide valid numbers")
   }
 }
+*/
 
 // console.log(process.argv)
 
+/*
 try {
-  const { height, weight } = parseArgs(process.argv)
+  const { height, weight } = parseBmiArgs(process.argv)
   console.log(calculateBmi(height, weight))
 } 
 catch(error) {
-  console.log("Error, ", error.message)
+  console.log("Error,", error.message)
 }
+*/
