@@ -8,7 +8,12 @@ interface Result {
   average: number
 }
 
-const exerciseCalculator = (exersices: number[], target: number): Result => {
+interface ParseExercisesArgsResult {
+  target: number,
+  exercises: number[]
+}
+
+const exerciseCalculator = (target: number, exersices: number[]): Result => {
   const average = exersices.reduce((sum, e) => sum + e) / exersices.length;
   let rating: number,
       ratingDesciption: string;
@@ -35,4 +40,27 @@ const exerciseCalculator = (exersices: number[], target: number): Result => {
   }
 }
 
-console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1], 2));
+const parseExerciseArgs = (args: Array<string>): ParseExercisesArgsResult => {
+  if(args.length < 4) {
+    throw new Error("Too few arguments, provide at least 2");
+  }
+
+  args.forEach((arg, index) => {
+    if(index > 1 && isNaN(Number(args[index]))) {
+      throw new Error(`Invalid argument "${arg}". Use numbers only`);
+    }
+  })
+
+  return {
+    target: Number(args[2]),
+    exercises: args.slice(3).map(a => Number(a))
+  }
+}
+
+try {
+  const { target, exercises } = parseExerciseArgs(process.argv);
+  console.log(exerciseCalculator(target, exercises));
+}
+catch(error) {
+  console.log("Error,", error.message);
+}
