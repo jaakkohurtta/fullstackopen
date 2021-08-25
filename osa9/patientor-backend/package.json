@@ -2,10 +2,10 @@
   "name": "patientor-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "./src/app.js",
   "scripts": {
     "tsc": "tsc",
-    "dev": "ts-node-dev app.ts",
+    "dev": "ts-node-dev ./src/app.ts",
     "lint": "eslint --ext .ts ."
   },
   "author": "",
