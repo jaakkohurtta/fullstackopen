@@ -27,3 +27,4 @@
 9. [osa9](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9)
    * [TypeScript 101](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9/typescript101)
    * [patientor backend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9/patientor-backend)
+   * [Kurssitiedot typed](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9/kurssitiedot-typed)
