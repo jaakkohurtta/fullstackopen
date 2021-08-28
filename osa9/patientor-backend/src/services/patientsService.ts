@@ -10,19 +10,24 @@ const getData = (): Patient[] => {
 };
 
 const getNonSensitiveData = (): CensoredPatient[] => {
-  return patients.map(patient => ({
+  return patients.map((patient) => ({
     id: patient.id,
     name: patient.name,
     dateOfBirth: patient.dateOfBirth,
     gender: patient.gender,
-    occupation: patient.occupation
+    occupation: patient.occupation,
   }));
+};
+
+const getPatientById = (id: string): Patient | undefined => {
+  const patient = patients.find((p) => p.id === id);
+  return patient;
 };
 
 const createNewPatient = (patientObj: NewPatient) => {
   const newPatient: Patient = {
     id: uuidv1(),
-    ...patientObj
+    ...patientObj,
   };
 
   patients.push(newPatient);
@@ -32,5 +37,6 @@ const createNewPatient = (patientObj: NewPatient) => {
 export default {
   getData,
   getNonSensitiveData,
-  createNewPatient
+  getPatientById,
+  createNewPatient,
 };
