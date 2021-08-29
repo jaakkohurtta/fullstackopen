@@ -1,12 +1,10 @@
 import React from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
 
-import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
-import { Patient } from "../types";
-import { updatePatient } from "../state";
+import { patientService } from "../services/patients";
+import { setPatient } from "../state";
 
 const PatientPage = () => {
   const id = useParams<{ id: string }>().id;
@@ -15,19 +13,13 @@ const PatientPage = () => {
   // console.log(patients);
 
   React.useEffect(() => {
-    const fetchPatient = async () => {
-      try {
-        const { data: patient } = await axios.get<Patient>(
-          `${apiBaseUrl}/patients/${id}`
-        );
-        dispatch(updatePatient(patient));
-      } catch (e) {
-        console.log(e.message);
-      }
-    };
-
     if (!patients[id].ssn) {
-      void fetchPatient();
+      patientService
+        .getPatientData(id)
+        .then((res) => dispatch(setPatient(res)))
+        .catch((error) => {
+          console.error(error.response?.data || "Unknown Error");
+        });
     }
   }, [dispatch]);
 
