@@ -24,6 +24,7 @@ const PatientPage = () => {
   }, [dispatch]);
 
   const patient = patients[id];
+  console.log(patient.entries);
 
   return (
     <div className="App">
@@ -35,6 +36,21 @@ const PatientPage = () => {
       </h2>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
+      <br />
+      {patient.entries &&
+        patient.entries.map((entry) => (
+          <div key={entry.id}>
+            <h3>entries</h3>
+            <div>
+              {entry.date} {entry.description}
+            </div>
+            <ul>
+              {entry.diagnosisCodes?.map((code) => (
+                <li key={code}>{code}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
     </div>
   );
 };
