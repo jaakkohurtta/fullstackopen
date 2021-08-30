@@ -39,13 +39,9 @@ const PatientPage = () => {
       <div>occupation: {patient.occupation}</div>
       <br />
       <Divider />
+      <Header as="h3">Patient journal</Header>
       {patient.entries && (
         <Item.Group>
-          {patient.entries.length > 0 ? (
-            <Header as="h3">Patient journal</Header>
-          ) : (
-            <></>
-          )}
           {patient.entries.map((entry) => (
             <JournalEntry key={entry.id} entry={entry} />
           ))}

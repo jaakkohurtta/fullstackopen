@@ -1,38 +1,9 @@
-import { NewPatient, Gender } from "../types";
-
-const isString = (input: unknown): input is string => {
-  return typeof input === "string" || input instanceof String;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isGender = (params: any): params is Gender => {
-  return Object.values(Gender).includes(params);
-};
-
-const isDate = (input: string): boolean => {
-  return Boolean(Date.parse(input));
-};
-
-const inputStringParser = (input: unknown): string => {
-  if (!input || !isString(input)) {
-    throw new Error("Incorrect or missing content");
-  }
-  return input;
-};
-
-const inputGenderParser = (input: unknown): Gender => {
-  if (!input || !isGender(input)) {
-    throw new Error("Incorrect or missing gender");
-  }
-  return input;
-};
-
-const inputDateParser = (input: unknown): string => {
-  if (!input || !isString(input) || !isDate(input)) {
-    throw new Error(`Incorrect or missing date: ${input}`);
-  }
-  return input;
-};
+import { NewPatient } from "../types";
+import {
+  inputStringParser,
+  inputDateParser,
+  inputGenderParser,
+} from "./inputParsers";
 
 type InputFields = {
   name: unknown;
