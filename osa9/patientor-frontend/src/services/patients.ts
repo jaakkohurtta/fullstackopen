@@ -25,9 +25,11 @@ const addNewPatient = async (newPatient: Omit<Patient, "id" | "entries">) => {
   return data;
 };
 
-export const patientService = {
+const patientService = {
   ping,
   getPatientList,
   getPatientData,
   addNewPatient,
 };
+
+export default patientService;

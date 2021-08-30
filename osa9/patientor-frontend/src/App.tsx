@@ -2,8 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
 
-import { useStateValue, setPatientList } from "./state";
-import { patientService } from "./services/patients";
+import { useStateValue, setPatientList, setDiagnosis } from "./state";
+import patientService from "./services/patients";
+import diagnosisService from "./services/diagnoses";
 
 import PatientListPage from "./PatientListPage";
 import PatientPage from "./PatientPage";
@@ -15,6 +16,12 @@ const App = () => {
     patientService
       .getPatientList()
       .then((res) => dispatch(setPatientList(res)))
+      .catch((error) => {
+        console.error(error.response?.data || "Unknown Error");
+      });
+    diagnosisService
+      .getDiagnosis()
+      .then((res) => dispatch(setDiagnosis(res)))
       .catch((error) => {
         console.error(error.response?.data || "Unknown Error");
       });

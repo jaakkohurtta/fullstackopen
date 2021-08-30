@@ -8,7 +8,7 @@ import { Patient } from "../types";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue } from "../state";
 import { setPatient } from "../state";
-import { patientService } from "../services/patients";
+import patientService from "../services/patients";
 
 const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();

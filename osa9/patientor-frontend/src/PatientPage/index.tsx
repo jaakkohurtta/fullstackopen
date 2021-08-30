@@ -1,10 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Icon } from "semantic-ui-react";
+import { Icon, Header, Divider, Item } from "semantic-ui-react";
 
 import { useStateValue } from "../state";
-import { patientService } from "../services/patients";
+import patientService from "../services/patients";
 import { setPatient } from "../state";
+
+import JournalEntry from "../components/JournalEntry";
 
 const PatientPage = () => {
   const id = useParams<{ id: string }>().id;
@@ -24,7 +26,6 @@ const PatientPage = () => {
   }, [dispatch]);
 
   const patient = patients[id];
-  console.log(patient.entries);
 
   return (
     <div className="App">
@@ -37,20 +38,19 @@ const PatientPage = () => {
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
       <br />
-      {patient.entries &&
-        patient.entries.map((entry) => (
-          <div key={entry.id}>
-            <h3>entries</h3>
-            <div>
-              {entry.date} {entry.description}
-            </div>
-            <ul>
-              {entry.diagnosisCodes?.map((code) => (
-                <li key={code}>{code}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <Divider />
+      {patient.entries && (
+        <Item.Group>
+          {patient.entries.length > 0 ? (
+            <Header as="h3">Patient journal</Header>
+          ) : (
+            <></>
+          )}
+          {patient.entries.map((entry) => (
+            <JournalEntry key={entry.id} entry={entry} />
+          ))}
+        </Item.Group>
+      )}
     </div>
   );
 };
