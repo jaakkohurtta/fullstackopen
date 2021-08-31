@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Table, Button } from "semantic-ui-react";
 
-import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
+import { PatientFormValues } from "../AddPatientFormModal/AddPatientForm";
+import AddPatientFormModal from "../AddPatientFormModal";
 import { Patient } from "../types";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue } from "../state";
@@ -65,7 +65,7 @@ const PatientListPage = () => {
           ))}
         </Table.Body>
       </Table>
-      <AddPatientModal
+      <AddPatientFormModal
         modalOpen={modalOpen}
         onSubmit={submitNewPatient}
         error={error}

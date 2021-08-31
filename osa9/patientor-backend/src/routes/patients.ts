@@ -34,9 +34,11 @@ router.get("/:id", (req, res) => {
 router.post("/:id/entries", (req, res) => {
   const patient = patientsService.getPatientById(req.params.id);
 
+  console.log(req.body);
+
   let typedNewEntry;
 
-  switch (req.body.EntryType) {
+  switch (req.body.type) {
     case "HealthCheck":
       typedNewEntry = entryService.createNewEntry(
         typeHealthCheckEntry(req.body)
@@ -54,11 +56,10 @@ router.post("/:id/entries", (req, res) => {
       patient?.entries.unshift(typedNewEntry);
       break;
     default:
-      res.json(patient);
       break;
   }
 
-  res.json(patient);
+  res.json(typedNewEntry);
 });
 
 export default router;

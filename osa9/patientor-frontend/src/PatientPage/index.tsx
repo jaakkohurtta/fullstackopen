@@ -1,18 +1,19 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Icon, Header, Divider, Item } from "semantic-ui-react";
+import { Icon, Header, Divider, Item, Button } from "semantic-ui-react";
 
 import { useStateValue } from "../state";
 import patientService from "../services/patients";
 import { setPatient } from "../state";
 
 import JournalEntry from "../components/JournalEntry";
+import AddJournalEntryForm from "../components/AddJournalEntryForm";
 
 const PatientPage = () => {
   const id = useParams<{ id: string }>().id;
   const [{ patients }, dispatch] = useStateValue();
 
-  // console.log(patients);
+  const [showForm, setShowForm] = React.useState(false);
 
   React.useEffect(() => {
     if (!patients[id].ssn) {
@@ -39,12 +40,26 @@ const PatientPage = () => {
       <div>occupation: {patient.occupation}</div>
       <br />
       <Divider />
-      <Header as="h3">Patient journal</Header>
+      <Header as="h3">
+        Patient journal&nbsp;
+        {!showForm ? (
+          <Button onClick={() => setShowForm(true)}>Add entry</Button>
+        ) : (
+          <Button onClick={() => setShowForm(false)} color="red">
+            Cancel
+          </Button>
+        )}
+      </Header>
+      {showForm && (
+        <AddJournalEntryForm patient={patient.id} setShowForm={setShowForm} />
+      )}
       {patient.entries && (
         <Item.Group>
-          {patient.entries.map((entry) => (
-            <JournalEntry key={entry.id} entry={entry} />
-          ))}
+          {patient.entries
+            .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+            .map((entry) => (
+              <JournalEntry key={entry.id} entry={entry} />
+            ))}
         </Item.Group>
       )}
     </div>

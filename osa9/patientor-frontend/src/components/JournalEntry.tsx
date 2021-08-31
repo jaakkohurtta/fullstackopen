@@ -22,7 +22,7 @@ const itemStyle = {
 };
 
 const JournalEntry = ({ entry }: Props) => {
-  const [{ diagnosis }] = useStateValue();
+  const [{ diagnoses }] = useStateValue();
 
   const neverSayNever = (value: never): never => {
     throw new Error(`Unhandled union member: ${JSON.stringify(value)}`);
@@ -47,7 +47,7 @@ const JournalEntry = ({ entry }: Props) => {
               {entry.diagnosisCodes && <div>Diagnosis codes</div>}
               {entry.diagnosisCodes?.map((code) => (
                 <div key={code} style={{ paddingLeft: "20px" }}>
-                  {code} {diagnosis.find((d) => d.code === code)?.name}
+                  {code} {diagnoses.find((d) => d.code === code)?.name}
                 </div>
               ))}
             </Item.Extra>
@@ -66,7 +66,7 @@ const JournalEntry = ({ entry }: Props) => {
               {entry.diagnosisCodes && <div>Diagnosis codes</div>}
               {entry.diagnosisCodes?.map((code) => (
                 <div key={code} style={{ paddingLeft: "20px" }}>
-                  {code} {diagnosis.find((d) => d.code === code)?.name}
+                  {code} {diagnoses.find((d) => d.code === code)?.name}
                 </div>
               ))}
             </Item.Extra>
@@ -88,7 +88,7 @@ const JournalEntry = ({ entry }: Props) => {
               {entry.diagnosisCodes && <div>Diagnosis codes</div>}
               {entry.diagnosisCodes?.map((code) => (
                 <div key={code} style={{ paddingLeft: "20px" }}>
-                  {code} {diagnosis.find((d) => d.code === code)?.name}
+                  {code} {diagnoses.find((d) => d.code === code)?.name}
                 </div>
               ))}
             </Item.Extra>

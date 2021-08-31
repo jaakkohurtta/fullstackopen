@@ -46,7 +46,7 @@ export const inputGenderParser = (input: unknown): Gender => {
 };
 
 export const inputHealthCheckParser = (input: unknown): HealthCheckRating => {
-  if (!input || !isHealthCheckRating(input)) {
+  if (!isHealthCheckRating(input)) {
     throw new Error("Incorrect health check rating");
   }
   return input;
@@ -97,7 +97,12 @@ export const inputDischargeParser = (input: unknown): DischargeObj => {
   };
 };
 
-export const inputSickLeaveParser = (input: unknown): SickLeaveObj => {
+export const inputSickLeaveParser = (
+  input: unknown | undefined
+): SickLeaveObj | undefined => {
+  if (!input) {
+    return undefined;
+  }
   if (
     !isObject(input) ||
     !Object.keys(input).includes("startDate") ||

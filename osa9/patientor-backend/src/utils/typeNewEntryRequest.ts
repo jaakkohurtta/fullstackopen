@@ -15,7 +15,7 @@ type InputFields = {
   diagnosisCodes?: unknown[];
   healthCheckRating: unknown;
   employerName?: unknown;
-  sickLeave: unknown;
+  sickLeave?: unknown;
   discharge: unknown;
 };
 

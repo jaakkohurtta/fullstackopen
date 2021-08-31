@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
 
-import { useStateValue, setPatientList, setDiagnosis } from "./state";
+import { useStateValue, setPatientList, setDiagnoses } from "./state";
 import patientService from "./services/patients";
 import diagnosisService from "./services/diagnoses";
 
@@ -21,7 +21,7 @@ const App = () => {
       });
     diagnosisService
       .getDiagnosis()
-      .then((res) => dispatch(setDiagnosis(res)))
+      .then((res) => dispatch(setDiagnoses(res)))
       .catch((error) => {
         console.error(error.response?.data || "Unknown Error");
       });
