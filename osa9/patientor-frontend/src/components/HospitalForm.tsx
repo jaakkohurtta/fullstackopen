@@ -1,28 +1,31 @@
 import React from "react";
-import { Formik, Field, Form } from "formik";
+import { Field, Formik, Form } from "formik";
 import { Button, Grid } from "semantic-ui-react";
 
 import { useStateValue } from "../state";
 import { DiagnosisSelection } from "../AddPatientFormModal/FormField";
-import { NewEntry, HealthCheckRating } from "../types";
-import { TextField, NumberField } from "../AddPatientFormModal/FormField";
+import { HospitalEntry } from "../types";
+import { TextField } from "../AddPatientFormModal/FormField";
 
 interface Props {
-  onSubmit: (values: NewEntry) => void;
+  onSubmit: (values: Omit<HospitalEntry, "id">) => void;
   onCancel: (showForm: boolean) => void;
 }
 
-const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
+const HospitalForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
 
   return (
     <Formik
       initialValues={{
-        type: "HealthCheck",
+        type: "Hospital",
         description: "",
         date: "",
         specialist: "",
-        healthCheckRating: HealthCheckRating.Healthy,
+        discharge: {
+          date: "",
+          criteria: "",
+        },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -31,26 +34,25 @@ const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.description) {
           errors.description = requiredError;
         }
-        if (!values.date) {
-          errors.date = requiredError;
-        }
         if (isNaN(Date.parse(values.date))) {
           errors.date = "Invalid date format";
+        }
+        if (!values.date) {
+          errors.date = requiredError;
         }
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
-        if (values.type === "HealthCheck") {
-          if (
-            !Object.values(HealthCheckRating).includes(values.healthCheckRating)
-          ) {
-            errors.healthCheckRating = "Invalid health check rating";
-          }
+        if (!values.discharge.date || !values.discharge.criteria) {
+          errors.discharge = "Discharge date and criteria are required";
+        }
+        if (isNaN(Date.parse(values.discharge.date))) {
+          errors.discharge = "Invalid discharge date format";
         }
         return errors;
       }}
     >
-      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched, errors }) => {
         return (
           <Form className="form ui">
             <Field
@@ -71,13 +73,29 @@ const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
               name="specialist"
               component={TextField}
             />
-            <Field
-              label="healthCheckRating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
-            />
+            <Grid style={{ marginBottom: "1px" }}>
+              <Grid.Column width={8}>
+                <Field
+                  label="Discharge date"
+                  placeholder="Discharge date"
+                  name="discharge.date"
+                  component={TextField}
+                />
+              </Grid.Column>
+              <Grid.Column width={8}>
+                <Field
+                  label="Discharge criteria"
+                  placeholder="Discharge criteria"
+                  name="discharge.criteria"
+                  component={TextField}
+                />
+              </Grid.Column>
+            </Grid>
+            {errors.discharge ? (
+              <div style={{ color: "red", transform: "translateY(-14px)" }}>
+                {errors.discharge}
+              </div>
+            ) : null}
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
@@ -111,4 +129,4 @@ const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
   );
 };
 
-export default HealthCheckForm;
+export default HospitalForm;

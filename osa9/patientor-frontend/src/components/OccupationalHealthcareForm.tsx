@@ -1,28 +1,31 @@
 import React from "react";
-import { Formik, Field, Form } from "formik";
+import { Field, Formik, Form } from "formik";
 import { Button, Grid } from "semantic-ui-react";
 
 import { useStateValue } from "../state";
 import { DiagnosisSelection } from "../AddPatientFormModal/FormField";
-import { NewEntry, HealthCheckRating } from "../types";
-import { TextField, NumberField } from "../AddPatientFormModal/FormField";
+import { OccupationalHealthcareEntry } from "../types";
+import { TextField } from "../AddPatientFormModal/FormField";
 
 interface Props {
-  onSubmit: (values: NewEntry) => void;
+  onSubmit: (values: Omit<OccupationalHealthcareEntry, "id">) => void;
   onCancel: (showForm: boolean) => void;
 }
-
-const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
+const OccupationalHealthcareForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
 
   return (
     <Formik
       initialValues={{
-        type: "HealthCheck",
+        type: "OccupationalHealthcare",
         description: "",
         date: "",
         specialist: "",
-        healthCheckRating: HealthCheckRating.Healthy,
+        employerName: "",
+        sickLeave: {
+          startDate: "",
+          endDate: "",
+        },
       }}
       onSubmit={onSubmit}
       validate={(values) => {
@@ -34,23 +37,28 @@ const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.date) {
           errors.date = requiredError;
         }
-        if (isNaN(Date.parse(values.date))) {
-          errors.date = "Invalid date format";
-        }
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
-        if (values.type === "HealthCheck") {
-          if (
-            !Object.values(HealthCheckRating).includes(values.healthCheckRating)
-          ) {
-            errors.healthCheckRating = "Invalid health check rating";
-          }
+        if (!values.employerName) {
+          errors.employerName = requiredError;
+        }
+        if (
+          values.sickLeave?.startDate &&
+          isNaN(Date.parse(values.sickLeave.startDate))
+        ) {
+          errors.sickLeave = "Invalid sick leave start date format";
+        }
+        if (
+          values.sickLeave?.endDate &&
+          isNaN(Date.parse(values.sickLeave.endDate))
+        ) {
+          errors.sickLeave = "Invalid sick leave end date format";
         }
         return errors;
       }}
     >
-      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched, errors }) => {
         return (
           <Form className="form ui">
             <Field
@@ -72,12 +80,39 @@ const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
               component={TextField}
             />
             <Field
-              label="healthCheckRating"
-              name="healthCheckRating"
-              component={NumberField}
-              min={0}
-              max={3}
+              label="Employer name"
+              placeholder="Employer name"
+              name="employerName"
+              component={TextField}
             />
+            <Grid style={{ marginBottom: "1px" }}>
+              <Grid.Column width={8}>
+                <Field
+                  label="Sick leave start date"
+                  placeholder="Sick leave start date"
+                  name="sickLeave.startDate"
+                  component={TextField}
+                />
+                {errors.sickLeave && errors.sickLeave.includes("start") ? (
+                  <div style={{ color: "red", transform: "translateY(-14px)" }}>
+                    {errors.sickLeave}
+                  </div>
+                ) : null}
+              </Grid.Column>
+              <Grid.Column width={8}>
+                <Field
+                  label="Sick leave end date"
+                  placeholder="Sick leave end date"
+                  name="sickLeave.endDate"
+                  component={TextField}
+                />
+                {errors.sickLeave && errors.sickLeave.includes("end") ? (
+                  <div style={{ color: "red", transform: "translateY(-14px)" }}>
+                    {errors.sickLeave}
+                  </div>
+                ) : null}
+              </Grid.Column>
+            </Grid>
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
@@ -111,4 +146,4 @@ const HealthCheckForm = ({ onSubmit, onCancel }: Props) => {
   );
 };
 
-export default HealthCheckForm;
+export default OccupationalHealthcareForm;

@@ -1,18 +1,19 @@
 import React from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Dropdown, DropdownProps } from "semantic-ui-react";
 
-import { JournalEntryOption } from "../AddPatientFormModal/FormField";
-import { EntryTypes } from "../types";
+import { EntryType, NewEntry } from "../types";
 import entryService from "../services/entries";
 import { useStateValue, updatePatient } from "../state";
 
-import HealthCheckForm, { HealthCheckFormValues } from "./HealthCheckForm";
+import HealthCheckForm from "./HealthCheckForm";
+import HospitalForm from "./HospitalForm";
+import OccupationalHealthcareForm from "./OccupationalHealthcareForm";
 
-const journalEntryOptions: JournalEntryOption[] = [
-  { value: EntryTypes.HealthCheck, label: "HealthCheck" },
-  { value: EntryTypes.Hospital, label: "Hospital" },
+const entryTypes: { value: EntryType; label: string }[] = [
+  { value: EntryType.HealthCheck, label: "HealthCheck" },
+  { value: EntryType.Hospital, label: "Hospital" },
   {
-    value: EntryTypes.OccupationalHealthcare,
+    value: EntryType.OccupationalHealthcare,
     label: "Occupational Healthcare",
   },
 ];
@@ -23,18 +24,20 @@ interface Props {
 }
 
 const AddJournalEntryForm = ({ patient, setShowForm }: Props) => {
-  const [activeForm, setActiveForm] = React.useState(EntryTypes.HealthCheck);
+  const [activeForm, setActiveForm] = React.useState(EntryType.HealthCheck);
   const [, dispatch] = useStateValue();
 
   const handleEntryTypeChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
+    _e: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps
   ): void => {
-    setActiveForm(e.target.selectedIndex);
+    if (typeof data.value === "number") {
+      setActiveForm(data.value);
+    }
   };
 
-  const handleNewHealthCheckEntrySubmit = (values: HealthCheckFormValues) => {
+  const handleNewJournalEntrySubmit = (values: NewEntry) => {
     console.log(values);
-
     entryService
       .addNewJournalEntry(patient, values)
       .then((res) => {
@@ -50,20 +53,40 @@ const AddJournalEntryForm = ({ patient, setShowForm }: Props) => {
       <Form>
         <Form.Field>
           <label>Select Journal Entry Type</label>
-          <select onChange={(e) => handleEntryTypeChange(e)}>
-            {journalEntryOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label || option.value}
-              </option>
-            ))}
-          </select>
+          <Dropdown
+            fluid
+            selection
+            options={entryTypes.map((type) => ({
+              key: type.label,
+              text: type.label,
+              value: type.value,
+            }))}
+            onChange={handleEntryTypeChange}
+            defaultValue={EntryType.HealthCheck}
+          />
         </Form.Field>
       </Form>
+      <br />
       {
         {
-          0: <HealthCheckForm onSubmit={handleNewHealthCheckEntrySubmit} />,
-          1: <div>Hospital</div>,
-          2: <div>Occupational Healthcare</div>,
+          0: (
+            <HealthCheckForm
+              onSubmit={handleNewJournalEntrySubmit}
+              onCancel={setShowForm}
+            />
+          ),
+          1: (
+            <HospitalForm
+              onSubmit={handleNewJournalEntrySubmit}
+              onCancel={setShowForm}
+            />
+          ),
+          2: (
+            <OccupationalHealthcareForm
+              onSubmit={handleNewJournalEntrySubmit}
+              onCancel={setShowForm}
+            />
+          ),
         }[activeForm]
       }
     </div>

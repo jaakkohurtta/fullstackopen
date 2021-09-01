@@ -75,7 +75,7 @@ export const reducer = (state: State, action: Action): State => {
         },
       };
     case "UPDATE_PATIENT":
-      state.patients[action.payload.id].entries.push(action.payload.entry);
+      state.patients[action.payload.id].entries.unshift(action.payload.entry);
 
       return {
         ...state,

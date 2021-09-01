@@ -36,18 +36,18 @@ const PatientPage = () => {
         {patient.gender === "female" && <Icon name="venus" />}
         {patient.gender === "other" && <Icon name="genderless" />}
       </h2>
-      <div>ssn: {patient.ssn}</div>
-      <div>occupation: {patient.occupation}</div>
+      <div>
+        <strong>ssn:</strong> {patient.ssn}
+      </div>
+      <div>
+        <strong>occupation:</strong> {patient.occupation}
+      </div>
       <br />
       <Divider />
       <Header as="h3">
         Patient journal&nbsp;
-        {!showForm ? (
+        {!showForm && (
           <Button onClick={() => setShowForm(true)}>Add entry</Button>
-        ) : (
-          <Button onClick={() => setShowForm(false)} color="red">
-            Cancel
-          </Button>
         )}
       </Header>
       {showForm && (

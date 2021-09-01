@@ -34,7 +34,7 @@ router.get("/:id", (req, res) => {
 router.post("/:id/entries", (req, res) => {
   const patient = patientsService.getPatientById(req.params.id);
 
-  console.log(req.body);
+  // console.log(req.body);
 
   let typedNewEntry;
 
@@ -50,6 +50,13 @@ router.post("/:id/entries", (req, res) => {
       patient?.entries.unshift(typedNewEntry);
       break;
     case "OccupationalHealthcare":
+      if (
+        req.body.sickLeave &&
+        req.body.sickLeave.startDate === "" &&
+        req.body.sickLeave.endDate === ""
+      ) {
+        delete req.body.sickLeave;
+      }
       typedNewEntry = entryService.createNewEntry(
         typeOccupationalHealthcareEntry(req.body)
       );

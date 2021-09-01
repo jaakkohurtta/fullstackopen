@@ -29,11 +29,6 @@ export const SelectField = ({ name, label, options }: SelectFieldProps) => (
   </Form.Field>
 );
 
-export type JournalEntryOption = {
-  value: number;
-  label: string;
-};
-
 interface TextProps extends FieldProps {
   label: string;
   placeholder: string;
