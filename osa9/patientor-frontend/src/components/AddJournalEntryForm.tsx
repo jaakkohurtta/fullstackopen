@@ -37,7 +37,7 @@ const AddJournalEntryForm = ({ patient, setShowForm }: Props) => {
   };
 
   const handleNewJournalEntrySubmit = (values: NewEntry) => {
-    console.log(values);
+    // console.log(values);
     entryService
       .addNewJournalEntry(patient, values)
       .then((res) => {

@@ -4,11 +4,11 @@ import { Button, Grid } from "semantic-ui-react";
 
 import { useStateValue } from "../state";
 import { DiagnosisSelection } from "../AddPatientFormModal/FormField";
-import { NewEntry, HealthCheckRating } from "../types";
+import { HealthCheckEntry, HealthCheckRating } from "../types";
 import { TextField, NumberField } from "../AddPatientFormModal/FormField";
 
 interface Props {
-  onSubmit: (values: NewEntry) => void;
+  onSubmit: (values: Omit<HealthCheckEntry, "id">) => void;
   onCancel: (showForm: boolean) => void;
 }
 

@@ -37,6 +37,9 @@ const OccupationalHealthcareForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.date) {
           errors.date = requiredError;
         }
+        if (isNaN(Date.parse(values.date))) {
+          errors.date = "Invalid date format";
+        }
         if (!values.specialist) {
           errors.specialist = requiredError;
         }
