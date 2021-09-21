@@ -31,4 +31,4 @@
    * [Kurssitiedot typed](https://github.com/jaakkohurtta/fullstackopen/tree/main/part9/kurssitiedot-typed)
 10. part10 >> React Native
     * [Reporater React Native App](https://github.com/jaakkohurtta/reporater-app)
-11. [part11}(https://github.com/jaakkohurtta/fullstackopen/tree/main/part11) >> CI/CD
+11. [part11](https://github.com/jaakkohurtta/fullstackopen/tree/main/part11) >> CI/CD
