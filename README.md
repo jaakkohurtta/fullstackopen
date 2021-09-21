@@ -29,5 +29,5 @@
    * [patientor backend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9/patientor-backend)
    * [patientor frontend](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9/patientor-frontend)
    * [Kurssitiedot typed](https://github.com/jaakkohurtta/fullstackopen/tree/main/osa9/kurssitiedot-typed)
-10. part10 >> React Native
+10. part10 <> React Native
    * [Reporater React Native App](https://github.com/jaakkohurtta/reporater-app)
