@@ -1,2 +1,2 @@
 ### Frontend for Fullstackopen Bloglist app
-https://tranquil-falls-62914.herokuapp.com/
+https://stormy-shore-69938.herokuapp.com/
