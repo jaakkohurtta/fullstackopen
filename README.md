@@ -9,7 +9,7 @@
     * [Maidentiedot](https://github.com/jaakkohurtta/fullstackopen/tree/main/part2/maidentiedot)
     * [Puhelinluettelo](https://github.com/jaakkohurtta/fullstackopen/tree/main/part2/puhelinluettelo)
 3. part3 >> Programming a server with NodeJS and Express
-    * [Fonebook mern-stack app](https://github.com/jaakkohurtta/mern-fonebook)
+    * [Fonebook app](https://github.com/jaakkohurtta/fullstackopen/tree/main/part3/fonebook-app)
 4. part4 >> Testing Express servers, user administration
     * [Bloglist backend](https://github.com/jaakkohurtta/mern-bloglist)
 5. [part5](https://github.com/jaakkohurtta/fullstackopen/tree/main/part5) >> Testing React apps
