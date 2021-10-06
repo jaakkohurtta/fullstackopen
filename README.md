@@ -32,5 +32,5 @@
 10. part10 - React Native
     * [Reporater React Native App](https://github.com/jaakkohurtta/reporater-app)
 11. part11 - CI/CD
-    * [Pokedex](https://github.com/jaakkohurtta/full-stack-open-pokedex)
+    * [Pokedex](https://github.com/jaakkohurtta/fso-pokedex)
     * [Bloglist App](https://github.com/jaakkohurtta/fso-bloglist)
