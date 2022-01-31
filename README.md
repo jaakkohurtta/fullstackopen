@@ -35,3 +35,5 @@
     * [Part 11.1](https://github.com/jaakkohurtta/fullstackopen/blob/main/part11/exercise1.md)
     * [Pokedex](https://github.com/jaakkohurtta/fso-pokedex)
     * [Bloglist App](https://github.com/jaakkohurtta/fso-bloglist)
+13. part13 - Relational databases
+    * [Bloglist App with PostgreSQL](https://github.com/jaakkohurtta/fso-bloglist-postgres)
