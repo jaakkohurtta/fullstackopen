@@ -11,7 +11,7 @@
 3. part3 - Programming a server with NodeJS and Express
     * [Fonebook app](https://github.com/jaakkohurtta/fullstackopen/tree/main/part3/fonebook-app)
 4. part4 - Testing Express servers, user administration
-    * [Bloglist backend](https://github.com/jaakkohurtta/mern-bloglist)
+    * [Bloglist backend](https://github.com/jaakkohurtta/bloglist-app)
 5. part5 - Testing React apps
     * [Bloglist frontend](https://github.com/jaakkohurtta/fullstackopen/tree/main/part5/bloglist-frontend)
 6. part6 - State management with Redux
